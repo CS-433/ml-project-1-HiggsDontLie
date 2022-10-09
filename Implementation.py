@@ -40,3 +40,21 @@ def writecsv(data,namemodel):
 
         # write multiple rows
         writer.writerows(data)
+
+
+def least_squares(y, tx):
+    """Calculate the least squares solution.
+       returns mse, and optimal weights.
+
+    Args:
+        y: numpy array of shape (N,), N is the number of samples.
+        tx: numpy array of shape (N,D), D is the number of features.
+
+    Returns:
+        w: optimal weights, numpy array of shape(D,), D is the number of features.
+        mse: scalar."""
+
+    w = np.linalg.inv(tx.T.dot(tx)) @ tx.T @ y
+    mse = 1 / (2 * len(y)) * np.sum(np.power(y - tx.dot(w), 2))
+
+    return w, mse
