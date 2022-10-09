@@ -10,6 +10,18 @@ def standardize(x):
     x = x / std_x
     return x, mean_x, std_x
 
+def compute_loss(y, tx, w):
+    """Calculate the loss using either MSE or MAE.
+    Args:
+        y: shape=(N, )
+        tx: shape=(N,2)
+        w: shape=(2,). The vector of model parameters.
+
+    Returns:
+        the value of the loss (a scalar), corresponding to the input parameters w.
+    """
+    return 1/(2*len(y)) * np.sum(np.power(y-np.dot(tx,w),2))
+
 
 def load_data():
     """Load training data set and first cleaning of the data. The integer column "PRI_jet_num" becomes a float column"""
@@ -54,7 +66,9 @@ def least_squares(y, tx):
         w: optimal weights, numpy array of shape(D,), D is the number of features.
         mse: scalar."""
 
-    w = np.linalg.inv(tx.T.dot(tx)) @ tx.T @ y
-    mse = 1 / (2 * len(y)) * np.sum(np.power(y - tx.dot(w), 2))
+    txy = tx.T.dot(y)
+    xtx = tx.T.dot(tx)
+    w = np.linalg.solve(xtx, txy)
+    mse = compute_loss(y, tx, w)
 
     return w, mse
