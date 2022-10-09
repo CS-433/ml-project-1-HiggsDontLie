@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 
 
 def standardize(x):
@@ -18,3 +19,24 @@ def load_data():
     return data
 
 
+def writecsv(data,namemodel):
+    namefile='Predictions '+namemodel+'.csv'
+    header = ['Id', 'Prediction']
+
+    ''' example on what we need -> best to give directly Id link with prediction
+    data = [
+        ['Albania', 28748],
+        ['Algeria', 2381741],
+        ['American Samoa', 199],
+        ['Andorra', 468],
+        ['Angola', 1246700]
+    ]'''
+
+    with open(namefile, 'w', newline='') as f:
+        writer = csv.writer(f)
+
+        # write the header
+        writer.writerow(header)
+
+        # write multiple rows
+        writer.writerows(data)
