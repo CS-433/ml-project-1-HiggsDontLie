@@ -72,3 +72,21 @@ def least_squares(y, tx):
     mse = compute_loss(y, tx, w)
 
     return w, mse
+
+
+def ridge_regression(y, tx, lambda_):
+    """implement ridge regression.
+
+    Args:
+        y: numpy array of shape (N,), N is the number of samples.
+        tx: numpy array of shape (N,D), D is the number of features.
+        lambda_: scalar.
+
+    Returns:
+        w: optimal weights, numpy array of shape(D,), D is the number of features."""
+
+    lamb = lambda_ * 2 * tx.shape[1]
+    aI = lamb * np.identity(tx.shape[1])
+    a = tx.T.dot(tx) + aI
+    b = tx.T.dot(y)
+    return np.linalg.solve(a, b)
