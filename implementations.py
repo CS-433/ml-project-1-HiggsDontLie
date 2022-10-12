@@ -23,12 +23,13 @@ def compute_loss(y, tx, w):
     return 1/(2*len(y)) * np.sum(np.power(y-np.dot(tx,w),2))
 
 
-def load_data():
+def load_data(path):
     """Load training data set and first cleaning of the data. The integer column "PRI_jet_num" becomes a float column"""
-    path_dataset = "train.csv"
+    path_dataset = path
     data = np.genfromtxt(path_dataset, delimiter=",", dtype=None, names=True,
                          converters={1: lambda x: 0 if b"b" in x else 1, 24: lambda x: float(x)})
-    return data
+    #return the data as a 2d array
+    return np.array(data.tolist())
 
 
 def writecsv(data,namemodel):
