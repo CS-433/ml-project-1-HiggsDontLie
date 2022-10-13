@@ -4,9 +4,9 @@ import csv
 
 def standardize(x):
     """Standardize the original data set."""
-    mean_x = np.mean(x)
+    mean_x = np.mean(x, axis = 0)
     x = x - mean_x
-    std_x = np.std(x)
+    std_x = np.std(x, axis = 0)
     x = x / std_x
     return x, mean_x, std_x
 
@@ -27,7 +27,7 @@ def load_data(path):
     """Load training data set and first cleaning of the data. The integer column "PRI_jet_num" becomes a float column"""
     path_dataset = path
     data = np.genfromtxt(path_dataset, delimiter=",", dtype=None, names=True,
-                         converters={1: lambda x: 0 if b"b" in x else 1, 24: lambda x: float(x)})
+                         converters={1: lambda x: 1 if b"b" in x else 0, 24: lambda x: float(x)})
     #return the data as a 2d array
     return np.array(data.tolist())
 
