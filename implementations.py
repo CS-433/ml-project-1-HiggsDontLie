@@ -207,40 +207,46 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, batch_size=1):
     return w, loss
 
 
-def build_poly(x, degree):
+def build_poly(x, degree, col_to_expand):
     """polynomial basis functions for input data x, for j=0 up to j=degree.
-        this function returns the matrix formed by applying the polynomial basis to the input data
+        this function returns the matrix formed by applying the polynomial basis to the col_to_expand column of x
 
     Args:
-        x: numpy array of shape (N,), N is the number of samples.
+        x: numpy array of shape (N, D), N is the number of samples.
         degree: integer.
+        col_to_expand: integer, the index of the column to which the polynomial basis fct will be applied
 
     Returns:
-        poly: numpy array of shape (N,d+1)
+        data: numpy array of shape (N, D+degree)
 
-    example: build_poly(np.array([0.0, 1.5]), 2)
-    array([[1.  , 0.  , 0.  ],
-           [1.  , 1.5 , 2.25]])
+    example: build_poly(np.array([[0, 0.5, 2], [1, 2, 3]]), 2, 1)
+    array([[0.   2.   1.   0.5  0.25]
+            [1.   3.   1.   2.   4.  ]])
     """
+
     poly = np.zeros((x.shape[0], degree + 1))
+    feature = x[:, col_to_expand]
     for j in range(degree + 1):
-        poly[:, j] = x ** j
-    return poly
+        poly[:, j] = feature ** j
+    data = np.delete(x, col_to_expand, 1)
+    data = np.append(data, poly, axis=1)
+
+    return data
 
 
-def polynomial_regression(y, tx, degree):
-    """Constructing the polynomial basis function expansion of the data,
+def polynomial_regression(y, tx, degree, col_to_expand):
+    """Constructing the polynomial basis function expansion of the col_to_expand column of the data,
        and then running least squares regression.
     Args:
         y: numpy array of shape=(N, )
         tx: numpy array of shape=(N,D)
         degree: integer
+        col_to_expand: integer, feature that is expanded into polynomials
 
     Returns:
         weights: numpy array of shape=(degree+1), optimal weights for each feature expansion computed with least_square
         mse: scalar, the loss corresponding to the computed weights"""
-
-    data = build_poly(tx, degree)
+    data = build_poly(tx, degree, col_to_expand)
     weights, mse = least_squares(y, data)
 
     return weights, mse
@@ -294,3 +300,16 @@ def build_sets_cv(y, x, k_indices, k):
     y_train = y[train_indices]
 
     return x_train, y_train, x_test, y_test
+
+
+def predict_labels(x, w):
+    """returns the predicted labels given data set x and weights w
+
+           Args:
+               x: shape=(N,D), data set from which we want to predict our labels
+               w: shape=(D,), weights used to make prediction
+
+           Returns:
+               the predicted labels of dataset x
+           """
+    return np.dot(x, w)
