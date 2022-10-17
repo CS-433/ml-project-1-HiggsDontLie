@@ -18,35 +18,42 @@ def standardize(x):
     standardized_x = standardized_x / std_x
     return standardized_x, mean_x, std_x
 
-def data_preprocessing(data):
 
-    # this function need to standardize the data, remove -990 data points (replaced by mean of column)
+def find_low_variance(std_dev, threshold):
+    """Args:
+    std_dev: numpy array of size (N,)
+    threshold: float
+    Returns:
+         the indices of the standard deviations that are lower than the threshold
+    """
+    indices = np.where(np.abs(std_dev) < threshold)
+    return indices
+
+
+def data_preprocessing(data, indices_zero_var):
+
+    # this function need to standardize the data, remove -999 data points (replaced by mean of column)
     # remove features which have standard deviation of approx. 0, remove first column (identifiers)
     # and place Ys in a separate matrix
 
-    N = data.np.shape([0])
-    y = data[:1]
+    y = data[:, 1]
     # removing identifiers + Ys
-    data = np.delete(data,0,1)
-    data = np.delete(data,1,1)
-    D = data.np.shape([1])
+    data = np.delete(data, 0, 1)
+    data = np.delete(data, 0, 1)
 
-    #standardize the data:
+    # find -999 values
+    boolean_matrix = (data == -999)
+    data[boolean_matrix] = np.NaN
+    data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
+
+    # standardize the data:
     data, means, std_deviations = standardize(data)
 
-    #remove features where st deviation is close to 0
-    threshold = 1e-5
-    indices_zero_var = np.where(np.logical_and(std_deviations < threshold, std_deviations > -threshold))
-    data = np.delete(data,indices_zero_var,1 )
+    # remove features where st deviation is close to 0
+    data = np.delete(data, indices_zero_var, 1)
 
-    #find -999 values
-    boolean_matrix = (data ==-999)
-    indices = np.where(boolean_matrix==1)
+    return y, data
 
-
-
-
-    return y, prepocessed_data
 
 def compute_mse(y, tx, w):
     """Calculate the loss using either MSE
