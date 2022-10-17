@@ -9,14 +9,12 @@ def standardize(x):
 
     Returns:
         standardize_x: the standardized data
-        std_x: numpy array of size (D, ) containing the standard deviation of each feature
-        mean_x: numpy array of size(D, ) containing the mean of each feature
     """
     mean_x = np.mean(x, axis=0)
     standardized_x = x - mean_x
     std_x = np.std(x, axis=0)
     standardized_x = standardized_x / std_x
-    return standardized_x, mean_x, std_x
+    return standardized_x
 
 
 def find_low_variance(std_dev, threshold):
@@ -28,6 +26,18 @@ def find_low_variance(std_dev, threshold):
     """
     indices = np.where(np.abs(std_dev) < threshold)
     return indices
+
+
+# TODO: test this function, it should work tho
+def remove_outliers(data):
+
+    means = np.mean(data, axis=0)
+    std_devs = np.std(data, axis=0)
+    boolean_matrix = np.logical_or(data > means + 3*std_devs, data < means - 3*std_devs)
+    data[boolean_matrix] = np.NaN
+    data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
+
+    return data
 
 
 def data_preprocessing(data, indices_zero_var):
@@ -46,8 +56,11 @@ def data_preprocessing(data, indices_zero_var):
     data[boolean_matrix] = np.NaN
     data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
 
-    # standardize the data:
-    data, means, std_deviations = standardize(data)
+    # remove outliers
+    data = remove_outliers(data)
+
+    # standardize the data
+    data = standardize(data)
 
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
