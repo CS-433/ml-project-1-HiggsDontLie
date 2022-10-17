@@ -1,3 +1,4 @@
+
 import numpy as np
 import csv
 
@@ -9,6 +10,36 @@ def standardize(x):
     std_x = np.std(x, axis = 0)
     x = x / std_x
     return x, mean_x, std_x
+
+def data_preprocessing(data):
+
+    # this function need to standardize the data, remove -990 data points (replaced by mean of column)
+    # remove features which have standard deviation of approx. 0, remove first column (identifiers)
+    # and place Ys in a separate matrix
+
+    N = data.np.shape([0])
+    y = data[:1]
+    # removing identifiers + Ys
+    data = np.delete(data,0,1)
+    data = np.delete(data,1,1)
+    D = data.np.shape([1])
+
+    #standardize the data:
+    data, means, std_deviations = standardize(data)
+
+    #remove features where st deviation is close to 0
+    threshold = 1e-5
+    indices_zero_var = np.where(np.logical_and(std_deviations < threshold, std_deviations > -threshold))
+    data = np.delete(data,indices_zero_var,1 )
+
+    #find -999 values
+    boolean_matrix = (data ==-999)
+    indices = np.where(boolean_matrix==1)
+
+
+
+
+    return y, prepocessed_data
 
 def compute_loss(y, tx, w):
     """Calculate the loss using either MSE or MAE.
