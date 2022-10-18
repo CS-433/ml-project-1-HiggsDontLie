@@ -40,6 +40,23 @@ def remove_outliers(data):
     return data
 
 
+def predict_labels(x, w):
+    """returns the predicted labels given data set x and weights w
+
+           Args:
+               x: shape=(N,D), data set from which we want to predict our labels
+               w: shape=(D,), weights used to make prediction
+
+           Returns:
+               the predicted labels of dataset x
+           """
+    prediction = np.dot(x, w)
+    # sets labels that are not equal to 1 or -1 to their closer number
+    prediction[prediction >= 0] = 1
+    prediction[prediction < 0] = -1
+    return prediction
+
+
 def compute_mse(y, tx, w):
     """Calculate the loss using either MSE
     Args:
@@ -50,42 +67,43 @@ def compute_mse(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return np.mean(np.power(y-np.dot(tx, w), 2))/2
+    y_pred = predict_labels(tx, w)
+    return np.mean(np.power(y-y_pred, 2))/2
 
 
-def load_data(path_dataset):
-    """Load data set given by "path_dataset" and first cleaning of the data.
-    The integer column "PRI_jet_num" becomes a float column
-    label "b" becomes 1 and label "s" 0
+def load_csv_data(data_path, sub_sample=False):
+    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+    y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
+    x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
+    ids = x[:, 0].astype(np.int)
+    input_data = x[:, 2:]
+
+    # convert class labels from strings to binary (-1,1)
+    yb = np.ones(len(y))
+    yb[np.where(y == "b")] = -1
+
+    # sub-sample
+    if sub_sample:
+        yb = yb[::50]
+        input_data = input_data[::50]
+        ids = ids[::50]
+
+    return yb, input_data, ids
+
+
+def create_csv_submission(ids, y_pred, name):
     """
-    data = np.genfromtxt(path_dataset, delimiter=",", dtype=None, names=True,
-                         converters={1: lambda x: 1 if b"b" in x else 0, 24: lambda x: float(x)})
-    # return the data as a 2d array
-    data = np.asarray(data.tolist())
-    return data
-
-
-def write_csv(data, name_model):
-    namefile = 'Predictions '+name_model+'.csv'
-    header = ['Id', 'Prediction']
-
-    ''' example on what we need -> best to give directly Id link with prediction
-    data = [
-        ['Albania', 28748],
-        ['Algeria', 2381741],
-        ['American Samoa', 199],
-        ['Andorra', 468],
-        ['Angola', 1246700]
-    ]'''
-
-    with open(namefile, 'w', newline='') as f:
-        writer = csv.writer(f)
-
-        # write the header
-        writer.writerow(header)
-
-        # write multiple rows
-        writer.writerows(data)
+    Creates an output file in .csv format for submission to Kaggle or AIcrowd
+    Arguments: ids (event ids associated with each prediction)
+               y_pred (predicted class labels)
+               name (string name of .csv output file to be created)
+    """
+    with open(name, "w") as csvfile:
+        fieldnames = ["Id", "Prediction"]
+        writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
+        writer.writeheader()
+        for r1, r2 in zip(ids, y_pred):
+            writer.writerow({"Id": int(r1), "Prediction": int(r2)})
 
 
 def compute_gradient(y, tx, w):
@@ -157,51 +175,3 @@ def build_poly(x, degree, col_to_expand):
     return data
 
 
-def build_k_indices(y, k_fold, seed):
-    """build k indices for k-fold.
-
-    Args:
-        y:      shape=(N,)
-        k_fold: the number of folds
-        seed:   the random seed
-
-    Returns:
-        A 2D array of shape=(k_fold, N/k_fold) that indicates the data indices for each fold
-
-    example: build_k_indices(np.array([1., 2., 3., 4.]), 2, 1)
-    array([[3, 2],
-           [0, 1]])
-    """
-    num_row = y.shape[0]
-    interval = int(num_row / k_fold)
-    np.random.seed(seed)
-    indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
-    return np.array(k_indices)
-
-
-def build_sets_cv(y, x, k_indices, k):
-    """returns training and test sets for cross validation
-        puts the kth subgroup in test sets and the rest in training sets
-
-        Args:
-            y:          shape=(N,)
-            x:          shape=(N,D)
-            k_indices:  2D array returned by build_k_indices()
-            k:          scalar, the k-th fold (N.B.: not to confused with k_fold which is the fold nums)
-
-        Returns:
-            x_train, y_train: the data and its corresponding labels that will be used for training in the cv
-            x_test, y_test: the data and its corresponding labels that will be used for testing in the cv
-        """
-
-    x_test = x[k_indices[k], :]
-    y_test = y[k_indices[k]]
-    # np.arrange(k_indices.shape[0]) creates a list of the size of the number of folds
-    # ~ means not -> we take all the indices in k_indices except the ones in the kth fold
-    train_indices = k_indices[~(np.arange(k_indices.shape[0]) == k)]
-    train_indices = train_indices.reshape(-1)
-    x_train = x[train_indices, :]
-    y_train = y[train_indices]
-
-    return x_train, y_train, x_test, y_test

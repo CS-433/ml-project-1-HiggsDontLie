@@ -1,16 +1,10 @@
 from helpers import *
 
 
-def data_preprocessing(data, indices_zero_var):
+def data_preprocessing(data, indices_zero_var=[]):
 
     # this function need to standardize the data, remove -999 data points (replaced by mean of column)
-    # remove features which have standard deviation of approx. 0, remove first column (identifiers)
-    # and place Ys in a separate matrix
-
-    y = data[:, 1]
-    # removing identifiers + Ys
-    data = np.delete(data, 0, 1)
-    data = np.delete(data, 0, 1)
+    # remove features which have standard deviation of approx. 0
 
     # find -999 values
     boolean_matrix = (data == -999)
@@ -26,7 +20,7 @@ def data_preprocessing(data, indices_zero_var):
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
 
-    return y, data
+    return data
 
 
 def least_squares(y, tx):
@@ -143,16 +137,3 @@ def polynomial_regression(y, tx, degree, col_to_expand):
     weights, mse = least_squares(y, data)
 
     return weights, mse
-
-
-def predict_labels(x, w):
-    """returns the predicted labels given data set x and weights w
-
-           Args:
-               x: shape=(N,D), data set from which we want to predict our labels
-               w: shape=(D,), weights used to make prediction
-
-           Returns:
-               the predicted labels of dataset x
-           """
-    return np.dot(x, w)
