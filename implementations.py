@@ -14,6 +14,12 @@ def data_preprocessing(data, indices_zero_var=[]):
     # remove outliers
     data = remove_outliers(data)
 
+    # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
+    # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
+    # and PRI_jet_subleading_phi
+
+
+
     # standardize the data
     data = standardize(data)
 

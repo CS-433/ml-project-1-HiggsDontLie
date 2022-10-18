@@ -109,3 +109,45 @@ def cv_polynomial_reg(y, x, degree, col_to_expand, k_fold, seed):
     mse_te = np.mean(mse_te_temp)
     return mse_tr, mse_te
 
+
+def cv_ridge_reg(y, x, lambda_, k_fold, seed):
+    """ performs "k_fold"-cross validation of the ridge regression method
+
+            Args:
+                y:          shape=(N,)
+                x:          shape=(N,D)
+                lambda_:     array, penalty applied on the weights
+                k_fold:     scalar, the number of times we will perform the cross-validation
+                seed:       set the seed to have reproducible results
+
+            Returns:
+                lambda_mse_tr, lambda_mse_te:   dictionary of associated train and test errors
+                                                found by averaging all the train and test errors of
+                                                each fold with their corresponding lambda
+            """
+    k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
+
+    lambda_mse_tr = {}
+    lambda_mse_te = {}
+
+    for lamb in lambda_:
+        mse_tr_temp = []
+        mse_te_temp = []
+        for k in range(k_fold):
+            x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
+            w, mse_tr_i = ridge_regression(y_train, x_train, lamb)
+            mse_te_i = compute_mse(y_test, x_test, w)
+            mse_tr_temp.append(mse_tr_i)
+            mse_te_temp.append(mse_te_i)
+
+        mse_tr = np.mean(mse_tr_temp)
+        mse_te = np.mean(mse_te_temp)
+        lambda_mse_tr[lamb] = mse_tr
+        lambda_mse_te[lamb] = mse_te
+
+    #permet de retourner directement le lambda et son mse associé
+    #minl_tr = min(lambda_mse_tr, key=lambda_mse_tr.get)
+    #mse_tr_min = lambda_mse_tr[minl_tr]
+    #minl_te = min(lambda_mse_te, key=lambda_mse_te.get)
+    #mse_te_min = lambda_mse_te[minl_te]
+    return lambda_mse_tr, lambda_mse_te
