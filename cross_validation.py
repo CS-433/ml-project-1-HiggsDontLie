@@ -109,6 +109,50 @@ def cv_polynomial_reg(y, x, degree, col_to_expand, k_fold, seed):
     mse_te = np.mean(mse_te_temp)
     return mse_tr, mse_te
 
+def cv_gradient_des(y,x,gammas,k_fold, seed):
+    """ performs "k_fold"-cross validation of the gradient descend method
+
+                Args:
+                    y:          shape=(N,)
+                    x:          shape=(N,D)
+                    gamma:      array of the different step sizes
+                    k_fold:     scalar, the number of times we will perform the cross-validation
+                    seed:       set the seed to have reproducible results
+
+                Returns:
+                    mse_train, mse_test:    dictionnary of errors associated with each gamma after averaging over
+                                            k-fold cross-validation. The order in the array corresponds to the
+                                            order the gammas were given in
+
+                """
+    k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
+
+    # For now we set these parameters as fixed values, as we aren't tuning them
+    # if we wish to tune them we would need to enter them as arguments in the function
+    max_iters = 100
+    initial_w = np.zeros(x.shape[1])
+
+    mse_train = []
+    mse_test = []
+
+    for gamma in gammas:
+        mse_train_local = []
+        mse_test_local = []
+        for k in range(k_fold):
+            x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
+            weights, mse_train_i = mean_squared_error_gd(y_train,x_train,initial_w,max_iters,gamma)
+            mse_test_i = compute_mse(y_test, x_test, weights)
+            mse_train_local.append(mse_train_i)
+            mse_test_local.append(mse_test_i)
+
+        mse_tr = np.mean(mse_train_local)
+        mse_te = np.mean(mse_test_local)
+
+        mse_train.append(mse_tr)
+        mse_test.append(mse_te)
+
+    return mse_train, mse_test
+
 
 def cv_ridge_reg(y, x, lambda_, k_fold, seed):
     """ performs "k_fold"-cross validation of the ridge regression method

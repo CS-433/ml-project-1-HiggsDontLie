@@ -12,13 +12,32 @@ y, data, labels = load_csv_data("train.csv")
 # we found no features with low variance, so indices_zero_var is an empty array
 x = data_preprocessing(data)
 
-#compute mse on train and test sets for least squares after cv
-#mse_tr, mse_te = cv_least_squares(y, x, 7, seed)
+# compute mse on train and test sets for least squares after cv
+# mse_tr, mse_te = cv_least_squares(y, x, 7, seed)
 
 # 0.574407
 #print(mse_tr)
 # 0.574276
 #print(mse_te)
+
+# compute mse on train and test sets for gradient descend
+# gammas = np.logspace(start=-1,stop=0,num=11)
+# gamma_mse_tr, gamma_mse_te = cv_gradient_des(y,x,gammas,k_fold, seed)
+# min_error_train = min(gamma_mse_tr)
+# min_error_test = min(gamma_mse_te)
+# mses_visualization(gamma_mse_tr, gamma_mse_te, gammas, 'gamma', x_log_scale=True, title="training and test error GD")
+
+# min_gamma_train = gammas[np.where(gamma_mse_tr == min_error_train)]
+# min_gamma_test = gammas[np.where(gamma_mse_te == min_error_test)]
+
+# print(min_gamma_train)
+# 0.31622777
+# print(min_error_train)
+# 0.5743733333333333
+# print(min_gamma_test)
+# 0.25118864
+# print(min_error_test)
+# 0.5745440000000002
 
 #(test)compute mse on train and test sets for polynomial regression with degree 12 after cv
 #print(cv_polynomial_reg(y, x, 12, 2, k_fold, seed))
