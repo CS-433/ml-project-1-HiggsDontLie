@@ -1,4 +1,7 @@
+import numpy as np
+
 from helpers import *
+import math as mp
 
 
 def data_preprocessing(data, indices_zero_var=[]):
@@ -17,7 +20,14 @@ def data_preprocessing(data, indices_zero_var=[]):
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
-
+    indices = [11, 15, 18, 20, 25, 28]
+    for i in indices:
+        cosinus = np.zeros(250000)
+        for j in range(250000):
+            cosinus[j] = mp.cos(data[j][i])
+            data[j][i] = mp.sin(data[j][i])
+            #hstack=concatenate with axis =1
+        data = np.hstack((data, cosinus.reshape(-1, 1)))
 
 
     # standardize the data
