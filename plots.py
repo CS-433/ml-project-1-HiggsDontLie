@@ -1,8 +1,15 @@
 import matplotlib.pyplot as plt
 
 
-def mses_visualization(mse_tr, mse_te, x_values, x_label, title="training and test error",
-                       x_log_scale=False, save_figure=True):
+def mses_visualization(
+    mse_tr,
+    mse_te,
+    x_values,
+    x_label,
+    title="training and test error",
+    x_log_scale=False,
+    save_figure=True,
+):
     """visualization the curves of the training and test mse
     Args
         mse_tr, mse_te: numpy arrays of size (x, ), the training and test errors for each x_values
@@ -14,11 +21,11 @@ def mses_visualization(mse_tr, mse_te, x_values, x_label, title="training and te
 
         """
     if x_log_scale:
-        plt.semilogx(x_values, mse_tr, marker=".", color='b', label='train error')
-        plt.semilogx(x_values, mse_te, marker=".", color='r', label='test error')
+        plt.semilogx(x_values, mse_tr, marker=".", color="b", label="train error")
+        plt.semilogx(x_values, mse_te, marker=".", color="r", label="test error")
     else:
-        plt.plot(x_values, mse_tr, marker=".", color='b', label='train error')
-        plt.plot(x_values, mse_te, marker=".", color='r', label='test error')
+        plt.plot(x_values, mse_tr, marker=".", color="b", label="train error")
+        plt.plot(x_values, mse_te, marker=".", color="r", label="test error")
 
     plt.xlabel(x_label)
     plt.ylabel("mse")
@@ -26,4 +33,4 @@ def mses_visualization(mse_tr, mse_te, x_values, x_label, title="training and te
     plt.legend(loc=2)
     plt.grid(True)
     if save_figure:
-        plt.savefig("mses_"+title+".png")
+        plt.savefig("mses_" + title + ".png")

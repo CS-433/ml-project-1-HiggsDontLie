@@ -20,7 +20,7 @@ def build_k_indices(y, k_fold, seed):
     interval = int(num_row / k_fold)
     np.random.seed(seed)
     indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
+    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
 
@@ -109,7 +109,8 @@ def cv_polynomial_reg(y, x, degree, col_to_expand, k_fold, seed):
     mse_te = np.mean(mse_te_temp)
     return mse_tr, mse_te
 
-def cv_gradient_des(y,x,gammas,k_fold, seed):
+
+def cv_gradient_des(y, x, gammas, k_fold, seed):
     """ performs "k_fold"-cross validation of the gradient descend method
 
                 Args:
@@ -140,7 +141,9 @@ def cv_gradient_des(y,x,gammas,k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_gd(y_train,x_train,initial_w,max_iters,gamma)
+            weights, mse_train_i = mean_squared_error_gd(
+                y_train, x_train, initial_w, max_iters, gamma
+            )
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
             mse_test_local.append(mse_test_i)
@@ -189,9 +192,4 @@ def cv_ridge_reg(y, x, lambda_, k_fold, seed):
         lambda_mse_tr[lamb] = mse_tr
         lambda_mse_te[lamb] = mse_te
 
-    #permet de retourner directement le lambda et son mse associé
-    #minl_tr = min(lambda_mse_tr, key=lambda_mse_tr.get)
-    #mse_tr_min = lambda_mse_tr[minl_tr]
-    #minl_te = min(lambda_mse_te, key=lambda_mse_te.get)
-    #mse_te_min = lambda_mse_te[minl_te]
     return lambda_mse_tr, lambda_mse_te

@@ -33,7 +33,9 @@ def remove_outliers(data):
 
     means = np.mean(data, axis=0)
     std_devs = np.std(data, axis=0)
-    boolean_matrix = np.logical_or(data > means + 3*std_devs, data < means - 3*std_devs)
+    boolean_matrix = np.logical_or(
+        data > means + 3 * std_devs, data < means - 3 * std_devs
+    )
     data[boolean_matrix] = np.NaN
     data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
 
@@ -68,7 +70,7 @@ def compute_mse(y, tx, w):
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
     y_pred = predict_labels(tx, w)
-    return np.mean(np.power(y-y_pred, 2))/2
+    return np.mean(np.power(y - y_pred, 2)) / 2
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -173,5 +175,3 @@ def build_poly(x, degree, col_to_expand):
     data = np.append(data, poly, axis=1)
 
     return data
-
-

@@ -10,7 +10,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     # remove features which have standard deviation of approx. 0
 
     # find -999 values
-    boolean_matrix = (data == -999)
+    boolean_matrix = data == -999
     data[boolean_matrix] = np.NaN
     data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
 
@@ -26,9 +26,8 @@ def data_preprocessing(data, indices_zero_var=[]):
         for j in range(250000):
             cosinus[j] = mp.cos(data[j][i])
             data[j][i] = mp.sin(data[j][i])
-            #hstack=concatenate with axis =1
+            # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
-
 
     # standardize the data
     data = standardize(data)
@@ -126,7 +125,9 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, batch_size=1):
     w = initial_w
 
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+        for y_batch, tx_batch in batch_iter(
+            y, tx, batch_size=batch_size, num_batches=1
+        ):
             # compute gradient and loss
             gradient = compute_gradient(y_batch, tx_batch, w)
             # update w
