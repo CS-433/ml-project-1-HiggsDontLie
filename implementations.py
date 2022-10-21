@@ -20,7 +20,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
-    indices = [11, 15, 18, 20, 25, 28]
+    indices = [ 15, 18, 20, 25, 28]
     for i in indices:
         cosinus = np.zeros(250000)
         for j in range(250000):
