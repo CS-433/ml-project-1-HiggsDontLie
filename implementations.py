@@ -14,7 +14,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     jet_one = (data[:, 22] == 1)
     jet_two = (data[:, 22] == 2)
     jet_three = (data[:, 22] == 3)
-    x = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
+    data = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
                         jet_three.reshape(-1, 1)), axis=1)
 
     # find -999 values
@@ -34,19 +34,20 @@ def data_preprocessing(data, indices_zero_var=[]):
         for j in range(250000):
             cosinus[j] = mp.cos(data[j][i])
             data[j][i] = mp.sin(data[j][i])
-            # hstack=concatenate with axis =1
+        # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
 
     # remove feature PRI_jet_num
-    x = np.delete(x, 22, axis=1)
+    data = np.delete(data, 22, axis=1)
 
     # standardize the data
     data = standardize(data)
 
     # adds a row of 1 so that we can have an offset
-    x = np.c_[np.ones(len(x)), x]
+    data = np.c_[np.ones(len(data)), data]
 
     # remove features where st deviation is close to 0
+    # TODO: find which feature has 0 var
     data = np.delete(data, indices_zero_var, 1)
 
     return data
