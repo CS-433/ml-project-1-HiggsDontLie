@@ -9,14 +9,6 @@ def data_preprocessing(data, indices_zero_var=[]):
     # this function need to standardize the data, remove -999 data points (replaced by mean of column)
     # remove features which have standard deviation of approx. 0
 
-    # change the categorical feature PRI_jet_num into dummy variables
-    jet_zero = (data[:, 22] == 0)
-    jet_one = (data[:, 22] == 1)
-    jet_two = (data[:, 22] == 2)
-    jet_three = (data[:, 22] == 3)
-    data = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
-                        jet_three.reshape(-1, 1)), axis=1)
-
     # find -999 values
     boolean_matrix = data == -999
     data[boolean_matrix] = np.NaN
@@ -37,17 +29,25 @@ def data_preprocessing(data, indices_zero_var=[]):
         # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
 
-    # remove feature PRI_jet_num
-    data = np.delete(data, 22, axis=1)
+    # need to get the values of PRI_jet_num before standardization
+    jet_zero = (data[:, 22] == 0).astype(float)
+    jet_one = (data[:, 22] == 1).astype(float)
+    jet_two = (data[:, 22] == 2).astype(float)
+    jet_three = (data[:, 22] == 3).astype(float)
 
     # standardize the data
     data = standardize(data)
+    
+    # change the categorical feature PRI_jet_num into dummy variables
+    data = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
+                        jet_three.reshape(-1, 1)), axis=1)
+    data = np.delete(data, 22, axis=1)
 
     # adds a row of 1 so that we can have an offset
-    data = np.c_[np.ones(len(data)), data]
+    # TODO: find out why this causes problems in poly regression
+    # data = np.c_[np.ones(len(data)), data]
 
     # remove features where st deviation is close to 0
-    # TODO: find which feature has 0 var
     data = np.delete(data, indices_zero_var, 1)
 
     return data
