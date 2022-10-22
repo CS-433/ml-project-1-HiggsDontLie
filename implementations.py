@@ -9,6 +9,14 @@ def data_preprocessing(data, indices_zero_var=[]):
     # this function need to standardize the data, remove -999 data points (replaced by mean of column)
     # remove features which have standard deviation of approx. 0
 
+    # change the categorical feature PRI_jet_num into dummy variables
+    jet_zero = (data[:, 22] == 0)
+    jet_one = (data[:, 22] == 1)
+    jet_two = (data[:, 22] == 2)
+    jet_three = (data[:, 22] == 3)
+    x = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
+                        jet_three.reshape(-1, 1)), axis=1)
+
     # find -999 values
     boolean_matrix = data == -999
     data[boolean_matrix] = np.NaN
@@ -20,7 +28,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
-    indices = [ 15, 18, 20, 25, 28]
+    indices = [15, 18, 20, 25, 28]
     for i in indices:
         cosinus = np.zeros(250000)
         for j in range(250000):
@@ -29,8 +37,14 @@ def data_preprocessing(data, indices_zero_var=[]):
             # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
 
+    # remove feature PRI_jet_num
+    x = np.delete(x, 22, axis=1)
+
     # standardize the data
     data = standardize(data)
+
+    # adds a row of 1 so that we can have an offset
+    x = np.c_[np.ones(len(x)), x]
 
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
