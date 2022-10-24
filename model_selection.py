@@ -37,6 +37,27 @@ x = data_preprocessing(data)
 # print(min_error_test)
 # 0.5745440000000002
 
+# compute mse on train and test sets for stochastic gradient descend
+# gammas = np.logspace(start=-6,stop=-1,num=11)
+# gamma_mse_tr, gamma_mse_te = cv_stoch_gradient_des(y, x, gammas, k_fold, seed)
+
+# mses_visualization(gamma_mse_tr, gamma_mse_te, gammas, 'gamma', x_log_scale=True, title="training and test error Stoch GD")
+
+#min_error_train = min(gamma_mse_tr)
+#min_error_test = min(gamma_mse_te)
+
+#min_gamma_train = gammas[np.where(gamma_mse_tr == min_error_train)]
+#min_gamma_test = gammas[np.where(gamma_mse_te == min_error_test)]
+
+# print(min_gamma_train)
+# 0.001
+# print(min_error_train)
+# 0.6287573333333334
+# print(min_gamma_test)
+# 0.001
+# print(min_error_test)
+# 0.6295520000000001
+
 # (test)compute mse on train and test sets for polynomial regression with degree 12 after cv
 # print(cv_polynomial_reg(y, x, 12, 2, k_fold, seed))
 
