@@ -22,8 +22,8 @@ def data_preprocessing(data, indices_zero_var=[]):
     # and PRI_jet_subleading_phi
     indices = [15, 18, 20, 25, 28]
     for i in indices:
-        cosinus = np.zeros(250000)
-        for j in range(250000):
+        cosinus = np.zeros(data.shape[0])
+        for j in range(data.shape[0]):
             cosinus[j] = mp.cos(data[j][i])
             data[j][i] = mp.sin(data[j][i])
         # hstack=concatenate with axis =1
@@ -37,15 +37,13 @@ def data_preprocessing(data, indices_zero_var=[]):
 
     # standardize the data
     data = standardize(data)
-    
+
     # change the categorical feature PRI_jet_num into dummy variables
     data = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
-                        jet_three.reshape(-1, 1)), axis=1)
-    data = np.delete(data, 22, axis=1)
+                          jet_three.reshape(-1, 1)), axis=1)
 
     # adds a row of 1 so that we can have an offset
-    # TODO: find out why this causes problems in poly regression
-    # data = np.c_[np.ones(len(data)), data]
+    data = np.c_[np.ones(len(data)), data]
 
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
@@ -151,19 +149,23 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, batch_size=1):
     return w, loss
 
 
-def polynomial_regression(y, tx, degree, col_to_expand):
+def polynomial_regression(y, tx, degree, col_to_expand=-1):
     """Constructing the polynomial basis function expansion of the col_to_expand column of the data,
        and then running least squares regression.
     Args:
         y: numpy array of shape=(N, )
         tx: numpy array of shape=(N,D)
         degree: integer
-        col_to_expand: integer, feature that is expanded into polynomials
+        col_to_expand: integer, feature that is expanded into polynomials, if not given all the columns are expanded
 
     Returns:
         weights: numpy array of shape=(degree+1), optimal weights for each feature expansion computed with least_square
         mse: scalar, the loss corresponding to the computed weights"""
-    data = build_poly(tx, degree, col_to_expand)
-    weights, mse = least_squares(y, data)
+    if col_to_expand == -1:
+        for n in range(tx.shape[1]):
+            tx = build_poly(tx, degree, 1)
+    else:
+        tx = build_poly(tx, degree, col_to_expand)
+    weights, mse = least_squares(y, tx)
 
     return weights, mse

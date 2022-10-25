@@ -1,5 +1,8 @@
+import numpy as np
+
 from cross_validation import *
 from plots import *
+from helpers import *
 
 
 # set seed to be able to reproduce our results
@@ -84,3 +87,53 @@ x = data_preprocessing(data)
 #listste = sorted(lambda_mse_te.items())  # sorted by key, return a list of tuples
 #xte, yte = zip(*listste)
 #mses_visualization(y,yte, x, xte, x_log_scale=True)
+
+'''
+# find the minimal degree of each feature
+# this can take a long time to run, here are a few mins already computed
+best_degrees1 = [9, 8, 10, 10, 9, 8, 2, 10, 7, 10, 9, 3, 8, 8, 6, 9, 5, 8, 10, 10, 4, 9, 3, 5, 4, 4, 10, 8, 9, 8, 4, 6, 8, 1, 7]
+# -> without dummy variable pre-processing, best submission so far
+best_degrees2 = [9, 6, 10, 9, 9, 10, 10, 10, 9, 10, 9, 3, 8, 6, 10, 7, 9, 3, 8, 7, 2, 6, 1, 3, 10, 8, 4, 10, 5, 9, 6, 5, 9, 9, 5]
+# -> mins with PRI_jet_num as a dummy variable
+best_degrees = find_best_degree(y, x)
+print(best_degrees)
+x = features_poly_extension(x, best_degrees2)
+mse_tr, mse_te = cv_least_squares(y, x, k_fold, seed)
+# 0.372112 -> with best_degrees1
+# 0.372338 -> with best_degrees2
+print(mse_tr)
+# 0.372936 -> with best_degrees1
+# 0.373223 -> with best_degrees2
+print(mse_te)'''
+
+'''
+# try the best degree method with ridge regression
+lambdas = np.logspace(-10, 0, 11)
+x = data_preprocessing(data)
+best_degrees = [9, 6, 10, 9, 9, 10, 10, 10, 9, 10, 9, 3, 8, 6, 10, 7, 9, 3, 8, 7, 2, 6, 1, 3, 10, 8, 4, 10, 5, 9, 6, 5, 9, 9, 5]
+mse_tr, mse_te = cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed)
+min_mse_te = np.min(mse_te)
+min_lambda_te = lambdas[np.argmin(mse_te)]
+min_mse_tr = np.min(mse_tr)
+min_lambda_tr = lambdas[np.argmin(mse_tr)]
+# 0.0001
+print(min_lambda_te)
+# 0.372311
+print(min_mse_tr)
+# 0.373135
+print(min_mse_te)
+mses_visualization(mse_tr, mse_te, lambdas, "lambdas", title="cv ridge regression best degrees", x_log_scale=True)
+'''
+'''
+# cross validation of lambda and degree at the same time to find optimal degree and lambda
+x = data_preprocessing(data)
+degrees = range(1, 10)
+lambdas = np.logspace(-10, 0, 11)
+mse_te, best_degree, best_lambda = cv_poly_ridge(y, x, degrees=degrees, k_fold=10, lambdas=lambdas)
+# 0.372940
+print(mse_te)
+# 9
+print(best_degree)
+# 0.0001 
+print(best_lambda) '''
+
