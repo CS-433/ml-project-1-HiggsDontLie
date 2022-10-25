@@ -42,6 +42,23 @@ def remove_outliers(data):
     return data
 
 
+def features_poly_extension(x, best_degrees):
+    """Polynomial extension of the dataset where each feature is put to the degree giving the smallest error
+    The first column is not extended since it's the offset (column of 1s)
+
+           Args:
+               x: shape=(N+1,D), data set we want to extend with polynomials
+               best_degrees: list of degrees to put all the features we want to extend
+
+           Returns:
+               the polynomially extended data set x
+           """
+    for i in range(len(best_degrees)):
+        x = build_poly(x, best_degrees[i], col_to_expand=1)
+
+    return x
+
+
 def predict_labels(x, w):
     """returns the predicted labels given data set x and weights w
 
@@ -166,11 +183,10 @@ def build_poly(x, degree, col_to_expand):
     array([[0.   2.   1.   0.5  0.25]
             [1.   3.   1.   2.   4.  ]])
     """
-
-    poly = np.zeros((x.shape[0], degree + 1))
+    poly = np.zeros((x.shape[0], degree))
     feature = x[:, col_to_expand]
-    for j in range(degree + 1):
-        poly[:, j] = feature ** j
+    for j in range(1, degree + 1):
+        poly[:, j-1] = feature ** j
     data = np.delete(x, col_to_expand, 1)
     data = np.append(data, poly, axis=1)
 
