@@ -28,7 +28,6 @@ def find_low_variance(std_dev, threshold):
     return indices
 
 
-# TODO: test this function, it should work tho
 def remove_outliers(data):
 
     means = np.mean(data, axis=0)
