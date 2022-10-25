@@ -71,8 +71,8 @@ def predict_labels(x, w):
            """
     prediction = np.dot(x, w)
     # sets labels that are not equal to 1 or -1 to their closer number
-    prediction[prediction >= 0] = 1
-    prediction[prediction < 0] = -1
+    prediction[prediction > 0] = 1
+    prediction[prediction <= 0] = -1
     return prediction
 
 
@@ -86,8 +86,10 @@ def compute_mse(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
+    #e = y - tx.dot(w)
+
     y_pred = predict_labels(tx, w)
-    return np.mean(np.power(y - y_pred, 2)) / 2
+    return 1/2 * np.mean((y - y_pred) **2)
 
 
 def load_csv_data(data_path, sub_sample=False):
