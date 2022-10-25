@@ -124,16 +124,18 @@ print(min_mse_tr)
 print(min_mse_te)
 mses_visualization(mse_tr, mse_te, lambdas, "lambdas", title="cv ridge regression best degrees", x_log_scale=True)
 '''
-'''
+
 # cross validation of lambda and degree at the same time to find optimal degree and lambda
 x = data_preprocessing(data)
 degrees = range(1, 10)
 lambdas = np.logspace(-10, 0, 11)
 mse_te, best_degree, best_lambda = cv_poly_ridge(y, x, degrees=degrees, k_fold=10, lambdas=lambdas)
-# 0.372940
+# 0.372940 -> with mean
+# 0.367328 -> with median for -999 and outliers
 print(mse_te)
 # 9
 print(best_degree)
-# 0.0001 
-print(best_lambda) '''
+# 0.0001 -> with mean
+# 1e-07 -> median for -999 and outlier
+print(best_lambda)
 

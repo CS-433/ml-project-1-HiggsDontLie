@@ -12,7 +12,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     # find -999 values
     boolean_matrix = data == -999
     data[boolean_matrix] = np.NaN
-    data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
+    data = np.nan_to_num(data, nan=np.nanmedian(data, axis=0))
 
     # remove outliers
     data = remove_outliers(data)
