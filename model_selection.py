@@ -41,25 +41,25 @@ x = data_preprocessing(data)
 # print(cv_polynomial_reg(y, x, 12, 2, k_fold, seed))
 
 # compute mse on train and test sets for ridge regression after cv
-#lambda_ = np.logspace(-5, 0, 15)
-#lambda_mse_tr, lambda_mse_te = cv_ridge_reg(y, x, lambda_, k_fold, seed)
+# lambda_ = np.logspace(-5, 0, 15)
+# lambda_mse_tr, lambda_mse_te = cv_ridge_reg(y, x, lambda_, k_fold, seed)
 
-#find the min mse associate to a lambda for train and test sets
+# find the min mse associate to a lambda for train and test sets
 
-#minl_tr = min(lambda_mse_tr, key=lambda_mse_tr.get)
-#0.5723857777777778, lambda=0.00011787686347935866
-#print(minl_tr)
-#print(lambda_mse_tr[minl_tr])
+# minl_tr = min(lambda_mse_tr, key=lambda_mse_tr.get)
+# 0.5723857777777778, lambda=0.00011787686347935866
+# print(minl_tr)
+# print(lambda_mse_tr[minl_tr])
 
-#minl_te = min(lambda_mse_te, key=lambda_mse_te.get)
-#0.5725199999999999, lambda=2.2758459260747865e-05
-#print(minl_te)
-#print(lambda_mse_te[minl_te])
+# minl_te = min(lambda_mse_te, key=lambda_mse_te.get)
+# 0.5725199999999999, lambda=2.2758459260747865e-05
+# print(minl_te)
+# print(lambda_mse_te[minl_te])
 
 
 # visualisation of train and test errors of ridge regression in function of lambda
-#lists = sorted(lambda_mse_tr.items())  # sorted by key, return a list of tuples
-#x, y = zip(*lists)  # unpack a list of pairs into two tuples
-#listste = sorted(lambda_mse_te.items())  # sorted by key, return a list of tuples
-#xte, yte = zip(*listste)
-#mses_visualization(y,yte, x, xte, x_log_scale=True)
+# lists = sorted(lambda_mse_tr.items())  # sorted by key, return a list of tuples
+# x, y = zip(*lists)  # unpack a list of pairs into two tuples
+# listste = sorted(lambda_mse_te.items())  # sorted by key, return a list of tuples
+# xte, yte = zip(*listste)
+# mses_visualization(y,yte, x, xte, x_log_scale=True)
