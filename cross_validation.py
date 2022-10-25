@@ -291,6 +291,20 @@ def cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed=1):
 
 
 def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
+    """ performs "k_fold"-cross validation of the ridge regression method on different polynomial expansions of data x
+
+                    Args:
+                        y:          shape=(N,)
+                        x:          shape=(N,D) data set with an offset as the first column (col of 1s)
+                        degrees: array, different degrees to which all features should be elevated
+                        k_fold:     scalar, the number of times we will perform the cross-validation
+                        lambdas:    array, penalty applied on the weights
+                        seed:       set the seed to have reproducible results
+
+                    Returns:
+                        smallest test mse found, the degree and lambda used to find this mse
+
+                    """
     best_lambdas = []
     best_mses = []
     for d in degrees:
