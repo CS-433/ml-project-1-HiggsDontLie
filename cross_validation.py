@@ -145,7 +145,9 @@ def cv_gradient_des(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_gd(y_train, x_train, initial_w, max_iters, gamma)
+            weights, mse_train_i = mean_squared_error_gd(
+                y_train, x_train, initial_w, max_iters, gamma
+            )
 
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
@@ -191,7 +193,9 @@ def cv_stoch_gradient_des(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters, gamma)
+            weights, mse_train_i = mean_squared_error_sgd(
+                y_train, x_train, initial_w, max_iters, gamma
+            )
 
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
@@ -254,19 +258,21 @@ def find_best_degree(y, x):
                      """
     degrees = 10
     nb_col = x.shape[1]
-    mse_tr = np.zeros((degrees, nb_col-5))
-    mse_te = np.zeros((degrees, nb_col-5))
+    mse_tr = np.zeros((degrees, nb_col - 5))
+    mse_te = np.zeros((degrees, nb_col - 5))
     # we do not try it on column 0 since it's a col full of 1s
     # we do not try the degrees of the last 4 columns since it's the dummy variables (i.e. only contains 1s or 0s)
-    for c in np.arange(1, nb_col-4):
+    for c in np.arange(1, nb_col - 4):
         # we start at 1 because degree 0 is just columns of 1s
-        for d in np.arange(1, degrees+1):
+        for d in np.arange(1, degrees + 1):
             # 10-fold cv
-            mse_tr_i, mse_te_i = cv_polynomial_reg(y, x, d, k_fold=10, seed=1, col_to_expand=c)
-            mse_tr[d-1, c-1] = mse_tr_i
-            mse_te[d-1, c-1] = mse_te_i
+            mse_tr_i, mse_te_i = cv_polynomial_reg(
+                y, x, d, k_fold=10, seed=1, col_to_expand=c
+            )
+            mse_tr[d - 1, c - 1] = mse_tr_i
+            mse_te[d - 1, c - 1] = mse_te_i
     # returns an array of the best degree for each feature (= row index of each column + 1 since we start with degree=1)
-    return np.argmin(mse_te, axis=0)+1
+    return np.argmin(mse_te, axis=0) + 1
 
 
 def cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed=1):
@@ -289,7 +295,6 @@ def cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed=1):
     return mse_test, mse_train
 
 
-
 def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
     """ performs "k_fold"-cross validation of the ridge regression method on different polynomial expansions of data x
 
@@ -309,7 +314,7 @@ def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
     best_mses = []
     for d in degrees:
         x_poly = x
-        for n in range(x.shape[1]-4):
+        for n in range(x.shape[1] - 4):
             x_poly = build_poly(x_poly, d, col_to_expand=1)
         mse_tr_i, mse_te_i = cv_ridge_reg(y, x_poly, lambdas, k_fold, seed)
         best_index = np.argmin(mse_te_i)

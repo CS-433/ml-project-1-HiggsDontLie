@@ -186,7 +186,7 @@ def build_poly(x, degree, col_to_expand):
     poly = np.zeros((x.shape[0], degree))
     feature = x[:, col_to_expand]
     for j in range(1, degree + 1):
-        poly[:, j-1] = feature ** j
+        poly[:, j - 1] = feature ** j
     data = np.delete(x, col_to_expand, 1)
     data = np.append(data, poly, axis=1)
 

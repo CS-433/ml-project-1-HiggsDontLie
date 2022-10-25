@@ -18,4 +18,6 @@ y_test = predict_labels(x_test, weights)
 # create_csv_submission(ids_test, y_test, "pred_least_squares.csv")
 # create_csv_submission(ids_test, y_test, "pred_ridge_regression.csv")
 # create_csv_submission(ids_test, y_test, "pred_ridge0001_degree9.csv")
-create_csv_submission(ids_test, y_test, "pred_ridge_e7_degree9_median.csv") # best model so far
+create_csv_submission(
+    ids_test, y_test, "pred_ridge_e7_degree9_median.csv"
+)  # best model so far

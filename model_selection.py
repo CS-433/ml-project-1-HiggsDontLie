@@ -46,11 +46,11 @@ x = data_preprocessing(data)
 
 # mses_visualization(gamma_mse_tr, gamma_mse_te, gammas, 'gamma', x_log_scale=True, title="training and test error Stoch GD")
 
-#min_error_train = min(gamma_mse_tr)
-#min_error_test = min(gamma_mse_te)
+# min_error_train = min(gamma_mse_tr)
+# min_error_test = min(gamma_mse_te)
 
-#min_gamma_train = gammas[np.where(gamma_mse_tr == min_error_train)]
-#min_gamma_test = gammas[np.where(gamma_mse_te == min_error_test)]
+# min_gamma_train = gammas[np.where(gamma_mse_tr == min_error_train)]
+# min_gamma_test = gammas[np.where(gamma_mse_te == min_error_test)]
 
 # print(min_gamma_train)
 # 0.001
@@ -82,13 +82,13 @@ x = data_preprocessing(data)
 
 
 # visualisation of train and test errors of ridge regression in function of lambda
-#lists = sorted(lambda_mse_tr.items())  # sorted by key, return a list of tuples
-#x, y = zip(*lists)  # unpack a list of pairs into two tuples
-#listste = sorted(lambda_mse_te.items())  # sorted by key, return a list of tuples
-#xte, yte = zip(*listste)
-#mses_visualization(y,yte, x, xte, x_log_scale=True)
+# lists = sorted(lambda_mse_tr.items())  # sorted by key, return a list of tuples
+# x, y = zip(*lists)  # unpack a list of pairs into two tuples
+# listste = sorted(lambda_mse_te.items())  # sorted by key, return a list of tuples
+# xte, yte = zip(*listste)
+# mses_visualization(y,yte, x, xte, x_log_scale=True)
 
-'''
+"""
 # find the minimal degree of each feature
 # this can take a long time to run, here are a few mins already computed
 best_degrees1 = [9, 8, 10, 10, 9, 8, 2, 10, 7, 10, 9, 3, 8, 8, 6, 9, 5, 8, 10, 10, 4, 9, 3, 5, 4, 4, 10, 8, 9, 8, 4, 6, 8, 1, 7]
@@ -104,9 +104,9 @@ mse_tr, mse_te = cv_least_squares(y, x, k_fold, seed)
 print(mse_tr)
 # 0.372936 -> with best_degrees1
 # 0.373223 -> with best_degrees2
-print(mse_te)'''
+print(mse_te)"""
 
-'''
+"""
 # try the best degree method with ridge regression
 lambdas = np.logspace(-10, 0, 11)
 x = data_preprocessing(data)
@@ -123,13 +123,15 @@ print(min_mse_tr)
 # 0.373135
 print(min_mse_te)
 mses_visualization(mse_tr, mse_te, lambdas, "lambdas", title="cv ridge regression best degrees", x_log_scale=True)
-'''
+"""
 
 # cross validation of lambda and degree at the same time to find optimal degree and lambda
 x = data_preprocessing(data)
 degrees = range(1, 10)
 lambdas = np.logspace(-10, 0, 11)
-mse_te, best_degree, best_lambda = cv_poly_ridge(y, x, degrees=degrees, k_fold=10, lambdas=lambdas)
+mse_te, best_degree, best_lambda = cv_poly_ridge(
+    y, x, degrees=degrees, k_fold=10, lambdas=lambdas
+)
 # 0.372940 -> with mean
 # 0.367328 -> with median for -999 and outliers
 print(mse_te)
@@ -138,4 +140,3 @@ print(best_degree)
 # 0.0001 -> with mean
 # 1e-07 -> median for -999 and outlier
 print(best_lambda)
-

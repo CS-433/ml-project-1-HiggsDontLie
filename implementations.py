@@ -39,8 +39,16 @@ def data_preprocessing(data, indices_zero_var=[]):
     data = standardize(data)
 
     # change the categorical feature PRI_jet_num into dummy variables
-    data = np.concatenate((data, jet_zero.reshape(-1, 1), jet_one.reshape(-1, 1), jet_two.reshape(-1, 1),
-                          jet_three.reshape(-1, 1)), axis=1)
+    data = np.concatenate(
+        (
+            data,
+            jet_zero.reshape(-1, 1),
+            jet_one.reshape(-1, 1),
+            jet_two.reshape(-1, 1),
+            jet_three.reshape(-1, 1),
+        ),
+        axis=1,
+    )
 
     # adds a row of 1 so that we can have an offset
     data = np.c_[np.ones(len(data)), data]
@@ -138,7 +146,9 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, batch_size=1):
     w = initial_w
 
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+        for y_batch, tx_batch in batch_iter(
+            y, tx, batch_size=batch_size, num_batches=1
+        ):
             # compute gradient and loss
             gradient = compute_gradient(y_batch, tx_batch, w)
             # update w
