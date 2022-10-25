@@ -86,10 +86,10 @@ def compute_mse(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    #e = y - tx.dot(w)
+    e = y - tx.dot(w)
 
-    y_pred = predict_labels(tx, w)
-    return 1/2 * np.mean((y - y_pred) **2)
+    #y_pred = predict_labels(tx, w)y - y_pred
+    return 1/2 * np.mean((e) **2)
 
 
 def load_csv_data(data_path, sub_sample=False):
