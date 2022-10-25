@@ -89,7 +89,8 @@ def compute_mse(y, tx, w):
     e = y - tx.dot(w)
 
     #y_pred = predict_labels(tx, w)y - y_pred
-    return 1/2 * np.mean((e) **2)
+    #return 1/2 * np.mean((e) **2)
+    return 10
 
 
 def load_csv_data(data_path, sub_sample=False):
