@@ -234,7 +234,7 @@ def compute_loss_logistic(y, tx, w):
     """
     compute the loss with the negative log likelihood
     """
-    print(y)
+
     n = y.shape[0]
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
