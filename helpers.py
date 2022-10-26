@@ -214,7 +214,7 @@ def sigmoid(t):
         scalar or numpy array
     """
 
-    sigmoid_ = np.power((1 + np.exp(-t)), -1)
+    sigmoid_ = np.power((1 + np.exp(t)), -1)*np.exp(t)
 
     return sigmoid_
 
