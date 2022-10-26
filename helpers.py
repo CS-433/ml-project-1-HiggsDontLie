@@ -192,3 +192,71 @@ def build_poly(x, degree, col_to_expand):
     data = np.append(data, poly, axis=1)
 
     return data
+########################### LOGISTIC
+def sigmoid(t):
+    """apply sigmoid function on t.
+
+    Args:
+        t: scalar or numpy array
+
+    Returns:
+        scalar or numpy array
+    """
+
+    sigmoid = np.power((1 + np.exp(-t)), -1)
+
+    return sigmoid
+
+
+def compute_mse_logistic(y, tx, w):
+    """
+    compute the mse for error vector e for logistic regression
+    """
+    y = np.reshape(y, (-1, 1))
+    e = y - tx.dot(w)
+
+    return 1/2*np.mean(e**2)
+
+def compute_loss_logistic(y,tx,w):
+    """
+    compute the loss with the negative log likelihood
+    """
+    N = y.shape[0]
+    y = np.reshape(y, (-1, 1))
+    sig = sigmoid(tx.dot(w))
+    loss = y.T.dot(np.log(sig)) + (1-y).T.dot(np.log(1-sig))
+    return -np.mean(loss)
+
+
+def compute_gradient_logistic(y, tx, w):
+    """compute the gradient of loss.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+
+    Returns:
+        a vector of shape (D, 1)
+    """
+    y = np.reshape(y, (-1, 1))
+    N = y.shape[0]
+    sig = sigmoid(tx.dot(w))
+    gradient = tx.T @ ((sig) - y)
+
+    return gradient/N
+
+def change_labels_to_zero(y):
+    # Change labels from {-1,1} to {0,1}
+    y_updated = np.ones(len(y))
+    y_updated[y == -1] = 0
+
+    return y_updated
+
+def change_labels_to_minusone(y):
+    # Change labels from {0,1} to{-1,1}
+    y_updated = np.ones(len(y))
+    y_updated[y == 0] = -1
+
+    return y_updated
+

@@ -179,3 +179,85 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
     weights, mse = least_squares(y, tx)
 
     return weights, mse
+
+def logistic_regression_gd (y, tx, inital_w, max_iters, gamma):
+    """
+    The Gradient descent algorithm using logistic regression.
+
+    Args:
+        y: numpy array of shape=(N, )
+        tx: numpy array of shape=(N,D)
+        initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+        gamma: a scalar (float) that denotes the step size
+
+    Returns:
+        loss: scalar number
+        w: shape=(D, 1)
+    """
+
+    w = inital_w
+    for n_iter in range(max_iters):
+        # compute gradient
+        gradient = compute_gradient_logistic(y, tx, w)
+        loss = compute_loss_logistic(y, tx, w)
+        # update w by gradient
+        w = w - gamma * gradient
+    return w, loss
+
+def logistic_regression_sgd(y, tx, initial_w, max_iters, gamma):
+
+    """
+    The Stochastic Gradient Descent algorithm (SGD) using logistic regression
+
+    Args:
+        y: numpy array of shape=(N, )
+        tx: numpy array of shape=(N,D)
+        initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+        batch_size: a scalar denoting the number of data points in a mini-batch used for computing stochastic gradient
+                    default is 1
+        max_iters: a scalar denoting the total number of iterations of SGD
+        gamma: a scalar denoting the step size
+
+    Returns:
+        loss: the loss value (scalar) of the last iteration of SGD
+        w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
+    """
+    w = initial_w
+    for n_iter in range(max_iters):
+        for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
+            # compute gradient and loss
+            gradient = compute_gradient_logistic(y_batch, tx_batch, w)
+            # update w
+            w = np.reshape(w, (-1, 1))
+            w = w - gamma * gradient
+
+    loss = compute_loss_logistic(y, tx, w)
+
+    return w, loss
+
+def reg_logistic_regression_gd(y,tx,lambda_,initial_w,max_iters,gamma):
+
+    w = initial_w
+    penality = lambda_ * w.T.dot(w)
+    for n_iter in range(max_iters):
+        # compute gradient
+        gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
+        loss = compute_loss_logistic(y, tx, w) + np.squeeze(penality)
+        # update w by gradient
+        w = w - gamma * gradient
+    return w, loss
+
+
+def reg_logistic_regression_sgd(y, tx, lambda_, initial_w, max_iters, gamma):
+    w = initial_w
+    penality = lambda_ * w.T.dot(w)
+    for n_iter in range(max_iters):
+        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+            # compute gradient and loss
+            gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
+            # update w
+            w = w - gamma * gradient
+
+    loss = compute_loss_logistic(y, tx, w) + np.squeeze(penality)
+
+    return w, loss
