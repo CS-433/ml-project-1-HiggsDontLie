@@ -204,7 +204,8 @@ def logistic_regression_gd (y, tx, inital_w, max_iters, gamma):
         w = w - gamma * gradient
     return w, loss
 
-def logistic_regression_sgd(y, tx, initial_w, max_iters, gamma,batch_size = 1, num_batches = 1):
+
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
 
     """
     The Stochastic Gradient Descent algorithm (SGD) using logistic regression
@@ -225,7 +226,7 @@ def logistic_regression_sgd(y, tx, initial_w, max_iters, gamma,batch_size = 1, n
     w = initial_w
     w = np.reshape(w, (-1, 1))
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=num_batches):
+        for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss
             gradient = compute_gradient_logistic(y_batch, tx_batch, w)
             # update w
@@ -248,11 +249,11 @@ def reg_logistic_regression_gd(y,tx,lambda_,initial_w,max_iters,gamma):
     return w, loss
 
 
-def reg_logistic_regression_sgd(y, tx, lambda_, initial_w, max_iters, gamma,batch_size=1, num_batches=1):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     w = initial_w
     penality = lambda_ * w.T.dot(w)
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=num_batches):
+        for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss
             gradient = compute_gradient_logistic(y_batch, tx_batch, w) + 2 * lambda_ * w
             # update w
