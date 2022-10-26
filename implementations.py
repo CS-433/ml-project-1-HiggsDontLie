@@ -230,8 +230,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
             # update w
             w = w - gamma * gradient
 
-    #loss = compute_loss_logistic(y, tx, w)
-    loss = compute_mse_logistic(y, tx, w)
+    loss = compute_loss_logistic(y, tx, w)
+    #loss = compute_mse_logistic(y, tx, w)
 
     return w, loss
 
