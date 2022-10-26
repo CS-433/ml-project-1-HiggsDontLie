@@ -29,6 +29,14 @@ def find_low_variance(std_dev, threshold):
 
 
 def remove_outliers(data):
+    """Remove the outliers present in the data
+
+              Args:
+                  data:
+
+              Returns:
+
+              """
 
     means = np.mean(data, axis=0)
     std_devs = np.std(data, axis=0)
