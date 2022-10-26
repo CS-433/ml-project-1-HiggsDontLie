@@ -234,12 +234,12 @@ def compute_loss_logistic(y, tx, w):
     """
     compute the loss with the negative log likelihood
     """
-
+    print(y)
     n = y.shape[0]
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = y.T.dot(np.log(sig)) + (1-y).T.dot(np.log(1-sig))
-    return -np.mean(loss)
+    return -np.mean(loss)/n
 
 
 def compute_gradient_logistic(y, tx, w):
@@ -257,7 +257,7 @@ def compute_gradient_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     n = y.shape[0]
     sig = sigmoid(tx.dot(w))
-    gradient = tx.T.dot((sig - y))
+    gradient = tx.T@(sig - y)
 
     return gradient/n
 
