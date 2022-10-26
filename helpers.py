@@ -96,7 +96,7 @@ def compute_mse(y, tx, w):
     e = y - tx.dot(w)
 
     #y_pred = predict_labels(tx, w)y - y_pred
-    return 1/2 * np.mean((e) **2)
+    return 1/2 * np.mean(e ** 2)
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -145,8 +145,8 @@ def compute_gradient(y, tx, w):
         An numpy array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
     """
     e = y - tx.dot(w)
-    N = y.shape[0]
-    gradient = -(tx.T.dot(e)) / N
+    n = y.shape[0]
+    gradient = -(tx.T.dot(e)) / n
     return gradient
 
 
@@ -200,7 +200,10 @@ def build_poly(x, degree, col_to_expand):
     data = np.append(data, poly, axis=1)
 
     return data
+
 ########################### LOGISTIC
+
+
 def sigmoid(t):
     """apply sigmoid function on t.
 
@@ -211,9 +214,9 @@ def sigmoid(t):
         scalar or numpy array
     """
 
-    sigmoid = np.power((1 + np.exp(-t)), -1)
+    sigmoid_ = np.power((1 + np.exp(-t)), -1)
 
-    return sigmoid
+    return sigmoid_
 
 
 def compute_mse_logistic(y, tx, w):
@@ -225,11 +228,12 @@ def compute_mse_logistic(y, tx, w):
 
     return 1/2*np.mean(e**2)
 
-def compute_loss_logistic(y,tx,w):
+
+def compute_loss_logistic(y, tx, w):
     """
     compute the loss with the negative log likelihood
     """
-    N = y.shape[0]
+    n = y.shape[0]
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = y.T.dot(np.log(sig)) + (1-y).T.dot(np.log(1-sig))
@@ -248,11 +252,12 @@ def compute_gradient_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
     y = np.reshape(y, (-1, 1))
-    N = y.shape[0]
+    n = y.shape[0]
     sig = sigmoid(tx.dot(w))
-    gradient = tx.T @ ((sig) - y)
+    gradient = tx.T @ (sig - y)
 
-    return gradient/N
+    return gradient/n
+
 
 def change_labels_to_zero(y):
     # Change labels from {-1,1} to {0,1}
@@ -261,10 +266,10 @@ def change_labels_to_zero(y):
 
     return y_updated
 
+
 def change_labels_to_minusone(y):
     # Change labels from {0,1} to{-1,1}
     y_updated = np.ones(len(y))
     y_updated[y == 0] = -1
 
     return y_updated
-
