@@ -257,7 +257,7 @@ def compute_gradient_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     n = y.shape[0]
     sig = sigmoid(tx.dot(w))
-    gradient = tx.T@(sig - y)
+    gradient = tx.T.dot((sig - y))
 
     return gradient/n
 
