@@ -240,21 +240,22 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     return w, loss
 
 
-'''def reg_logistic_regression_gd(y, tx, lambda_, initial_w, max_iters, gamma):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 
     w = initial_w
     penality = lambda_ * w.T.dot(w)
+    y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
         gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
-        loss = compute_loss_logistic(y, tx, w) + np.squeeze(penality)
         # update w by gradient
         w = w - gamma * gradient
+    loss = compute_loss_logistic(y, tx, w)
     return w, loss
-'''
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
+
+def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
         The Stochastic Gradient Descent algorithm (SGD) using logistic regression and adding a regulatory term
 
