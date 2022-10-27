@@ -219,7 +219,7 @@ def sigmoid(t):
     return sigmoid_
 
 
-'''def compute_mse_logistic(y, tx, w):
+def compute_mse_logistic(y, tx, w):
     """
     compute the mse for error vector e for logistic regression
     """
@@ -227,15 +227,23 @@ def sigmoid(t):
     e = y - tx.dot(w)
 
     return 1/2*np.mean(e**2)
-    '''
+
 
 
 def compute_loss_logistic(y, tx, w):
     """
     compute the loss with the negative log likelihood
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+
+    Returns:
+        a vector of shape (D, 1)
     """
 
-    n = y.shape[0]
+
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
@@ -266,10 +274,10 @@ def change_labels_to_zero(y):
     # Change labels from {-1,1} to {0,1}
     y_updated = np.ones(len(y))
     for i in range(len(y)):
-        if y[i]==-1:
+        if y[i] == -1:
             y_updated[i] = 0
 
-    #y_updated[np.where(y == -1)] = 0
+    #y_updated[y] == -1] = 0
 
     return y_updated
 

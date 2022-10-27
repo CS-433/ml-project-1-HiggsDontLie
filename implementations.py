@@ -222,7 +222,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
     """
     w = initial_w
-    y=change_labels_to_zero(y)
+    y = change_labels_to_zero(y)
     w = np.reshape(w, (-1, 1))
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
@@ -231,8 +231,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
             # update w
             w = w - gamma * gradient
 
-    loss = compute_loss_logistic(y, tx, w)
-    #loss = compute_mse_logistic(y, tx, w)
+    #loss = compute_loss_logistic(y, tx, w)
+    loss = compute_mse_logistic(y, tx, w)
 
     return w, loss
 
