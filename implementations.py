@@ -180,7 +180,7 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
     return weights, mse
 
 
-def logistic_regression_gd(y, tx, initial_w, max_iters, gamma):
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     The Gradient descent algorithm using logistic regression.
 
@@ -206,7 +206,7 @@ def logistic_regression_gd(y, tx, initial_w, max_iters, gamma):
     return w, loss
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
+def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     """
     The Stochastic Gradient Descent algorithm (SGD) using logistic regression
 
@@ -223,7 +223,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     y = change_labels_to_zero(y)
-    w = np.reshape(w, (-1, 1))
+    #w = np.reshape(w, (-1, 1))
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss
@@ -276,7 +276,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
             gradient = compute_gradient_logistic(y_batch, tx_batch, w) + 2 * lambda_ * w
             # update w
             w = w - gamma * gradient
-            #+ np.squeeze(penality)
 
     loss = compute_loss_logistic(y, tx, w)
 
