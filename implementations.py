@@ -206,7 +206,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         # update w by gradient
         w = w - gamma * gradient
     loss = compute_loss_logistic(y, tx, w)
-    return w, loss
+    return w, np.squeeze(loss)
 
 
 def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
