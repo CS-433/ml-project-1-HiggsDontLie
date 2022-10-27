@@ -246,7 +246,7 @@ def compute_loss_logistic(y, tx, w):
 
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
-    loss = -y.T.dot(mt.log(sig)) - (1-y).T.dot(mt.log(1-sig))
+    loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
     return np.mean(loss)
 
 
