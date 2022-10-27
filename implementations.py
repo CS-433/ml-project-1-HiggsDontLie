@@ -198,7 +198,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
 
     w = initial_w
-    #w = np.reshape(w, (-1, 1))
+    # w = np.reshape(w, (-1, 1))
     y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
@@ -226,7 +226,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     y = change_labels_to_zero(y)
-    #w = np.reshape(w, (-1, 1))
+    # w = np.reshape(w, (-1, 1))
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss
@@ -235,7 +235,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
             w = w - gamma * gradient
 
     loss = compute_loss_logistic(y, tx, w)
-    #loss = compute_mse_logistic(y, tx, w)
+    # loss = compute_mse_logistic(y, tx, w)
 
     return w, loss
 
@@ -269,7 +269,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     return w, np.squeeze(loss)
 
 
-
 def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
         The Stochastic Gradient Descent algorithm (SGD) using logistic regression and adding a regulatory term
@@ -287,7 +286,7 @@ def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
             w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
         """
     w = initial_w
-    y=change_labels_to_zero(y)
+    y = change_labels_to_zero(y)
     penality = lambda_ * w.T.dot(w)
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):

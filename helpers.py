@@ -96,8 +96,8 @@ def compute_mse(y, tx, w):
     """
     e = y - tx.dot(w)
 
-    #y_pred = predict_labels(tx, w)y - y_pred
-    return 1/2 * np.mean(e ** 2)
+    # y_pred = predict_labels(tx, w)y - y_pred
+    return 1 / 2 * np.mean(e ** 2)
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -202,6 +202,7 @@ def build_poly(x, degree, col_to_expand):
 
     return data
 
+
 ########################### LOGISTIC
 
 
@@ -227,7 +228,7 @@ def compute_mse_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     e = y - tx.dot(w)
 
-    return 1/2*np.mean(e**2)
+    return 1 / 2 * np.mean(e ** 2)
 
 
 def compute_loss_logistic(y, tx, w):
@@ -245,9 +246,9 @@ def compute_loss_logistic(y, tx, w):
 
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
-    loss = -y.T @ (np.log(sig)) - (1-y).T @ (np.log(1-sig))
+    loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
     #
-    return 1/y.shape[0]*loss
+    return 1 / y.shape[0] * loss
 
 
 def compute_gradient_logistic(y, tx, w):
@@ -268,7 +269,7 @@ def compute_gradient_logistic(y, tx, w):
     gradient = tx.T @ (sig - y)
 
     return np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
-    #return gradient/y.shape[0]
+    # return gradient/y.shape[0]
 
 
 def change_labels_to_zero(y):
@@ -278,7 +279,7 @@ def change_labels_to_zero(y):
         if y[i] <= 0:
             y_updated[i] = 0
 
-    #y_updated[y] == -1] = 0
+    # y_updated[y] == -1] = 0
 
     return y_updated
 
