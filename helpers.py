@@ -265,10 +265,11 @@ def compute_gradient_logistic(y, tx, w):
 def change_labels_to_zero(y):
     # Change labels from {-1,1} to {0,1}
     y_updated = np.ones(len(y))
-    '''for i in range(len(y)):
-        if (y[i]==-1) :
-      '''
-    y_updated[np.where(y == -1)] = 0
+    for i in range(len(y)):
+        if y[i]==-1:
+            y_updated[i] = 0
+
+    #y_updated[np.where(y == -1)] = 0
 
     return y_updated
 
