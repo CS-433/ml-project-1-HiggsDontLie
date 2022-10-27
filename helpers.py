@@ -239,7 +239,7 @@ def compute_loss_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
-    return np.mean(loss)/n
+    return np.mean(loss)
 
 
 def compute_gradient_logistic(y, tx, w):
