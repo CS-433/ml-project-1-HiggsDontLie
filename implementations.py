@@ -241,6 +241,21 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
+    """
+            The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
+
+            Args:
+                y: numpy array of shape=(N, )
+                tx: numpy array of shape=(N,D)
+                lambda_: a scalar that will lead to the penalty term
+                initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+                max_iters: a scalar denoting the total number of iterations of GD
+                gamma: a scalar denoting the step size
+
+            Returns:
+                loss: the loss value (scalar) of the last iteration of GD
+                w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
+            """
 
     w = initial_w
     penality = lambda_ * w.T.dot(w)
