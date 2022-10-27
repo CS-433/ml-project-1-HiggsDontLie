@@ -243,7 +243,7 @@ def compute_loss_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    #y = np.reshape(y, (-1, 1))
+    y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
     #
@@ -262,7 +262,7 @@ def compute_gradient_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    #y = np.reshape(y, (-1, 1))
+    y = np.reshape(y, (-1, 1))
     n = y.shape[0]
     sig = sigmoid(tx.dot(w))
     gradient = tx.T @ (sig - y)

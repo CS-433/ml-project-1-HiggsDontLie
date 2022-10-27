@@ -1,3 +1,4 @@
+import numpy as np
 
 from helpers import *
 import math as mp
@@ -197,12 +198,14 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
 
     w = initial_w
+    #w = np.reshape(w, (-1, 1))
+    y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
         gradient = compute_gradient_logistic(y, tx, w)
-        loss = compute_loss_logistic(y, tx, w)
         # update w by gradient
         w = w - gamma * gradient
+        loss = compute_loss_logistic(y, tx, w)
     return w, loss
 
 
