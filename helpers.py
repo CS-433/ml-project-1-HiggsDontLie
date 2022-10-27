@@ -245,9 +245,9 @@ def compute_loss_logistic(y, tx, w):
 
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
-    loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
+    loss = -y.T @ (np.log(sig)) - (1-y).T @ (np.log(1-sig))
     #
-    return np.squeeze(loss)/y.shape[0]
+    return 1/y.shape[0]*loss
 
 
 def compute_gradient_logistic(y, tx, w):
@@ -263,18 +263,19 @@ def compute_gradient_logistic(y, tx, w):
     """
 
     y = np.reshape(y, (-1, 1))
-    n = y.shape[0]
+
     sig = sigmoid(tx.dot(w))
     gradient = tx.T @ (sig - y)
 
-    return gradient/n
+    return np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
+    #return gradient/y.shape[0]
 
 
 def change_labels_to_zero(y):
     # Change labels from {-1,1} to {0,1}
     y_updated = np.ones(len(y))
     for i in range(len(y)):
-        if y[i] < 0:
+        if y[i] <= 0:
             y_updated[i] = 0
 
     #y_updated[y] == -1] = 0
