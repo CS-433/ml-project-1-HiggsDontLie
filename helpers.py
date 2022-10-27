@@ -243,7 +243,7 @@ def compute_loss_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    y = np.reshape(y, (-1, 1))
+    #y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
     #
