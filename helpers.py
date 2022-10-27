@@ -230,7 +230,6 @@ def compute_mse_logistic(y, tx, w):
     return 1/2*np.mean(e**2)
 
 
-
 def compute_loss_logistic(y, tx, w):
     """
     compute the loss with the negative log likelihood
@@ -247,7 +246,7 @@ def compute_loss_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T.dot(np.log(sig)) - (1-y).T.dot(np.log(1-sig))
-    return np.mean(loss)
+    return np.squeeze(loss)/np.shape(y[0])
 
 
 def compute_gradient_logistic(y, tx, w):
