@@ -1,5 +1,3 @@
-import numpy as np
-
 from helpers import *
 import math as mp
 import black
@@ -52,7 +50,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     )
 
     # remove the initial column
-    np.delete(data, 22, axis=1)
+    data = np.delete(data, 22, axis=1)
 
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
