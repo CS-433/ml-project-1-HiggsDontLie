@@ -50,11 +50,14 @@ def data_preprocessing(data, indices_zero_var=[]):
         axis=1,
     )
 
-    # adds a row of 1 so that we can have an offset
-    data = np.c_[np.ones(len(data)), data]
+    # remove the initial column
+    np.delete(data, 22, axis=1)
 
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
+
+    # adds a row of 1 so that we can have an offset
+    data = np.c_[np.ones(len(data)), data]
 
     return data
 
@@ -198,7 +201,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
 
     w = initial_w
-    # w = np.reshape(w, (-1, 1))
+    w = np.reshape(w, (-1, 1))
     y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient

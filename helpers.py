@@ -45,7 +45,7 @@ def remove_outliers(data):
         data > means + 3 * std_devs, data < means - 3 * std_devs
     )
     data[boolean_matrix] = np.NaN
-    data = np.nan_to_num(data, nan=np.nanmean(data, axis=0))
+    data = np.nan_to_num(data, nan=np.nanmedian(data, axis=0))
 
     return data
 
@@ -250,7 +250,7 @@ def compute_loss_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    #y = np.reshape(y, (-1, 1))
+    y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
 
@@ -269,7 +269,7 @@ def compute_gradient_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    #y = np.reshape(y, (-1, 1))
+    y = np.reshape(y, (-1, 1))
 
     sig = sigmoid(tx.dot(w))
     gradient = np.dot(tx.T,(sig - y))
