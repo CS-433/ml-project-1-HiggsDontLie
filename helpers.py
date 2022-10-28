@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 import math as mt
+import black
 
 
 def standardize(x):
@@ -32,12 +33,12 @@ def find_low_variance(std_dev, threshold):
 def remove_outliers(data):
     """Remove the outliers present in the data
 
-              Args:
-                  data:
+    Args:
+        data:
 
-              Returns:
+    Returns:
 
-              """
+    """
 
     means = np.mean(data, axis=0)
     std_devs = np.std(data, axis=0)
@@ -60,7 +61,7 @@ def features_poly_extension(x, best_degrees):
 
            Returns:
                the polynomially extended data set x
-           """
+    """
     for i in range(len(best_degrees)):
         x = build_poly(x, best_degrees[i], col_to_expand=1)
 
@@ -70,13 +71,13 @@ def features_poly_extension(x, best_degrees):
 def predict_labels(x, w):
     """returns the predicted labels given data set x and weights w
 
-           Args:
-               x: shape=(N,D), data set from which we want to predict our labels
-               w: shape=(D,), weights used to make prediction
+    Args:
+        x: shape=(N,D), data set from which we want to predict our labels
+        w: shape=(D,), weights used to make prediction
 
-           Returns:
-               the predicted labels of dataset x
-           """
+    Returns:
+        the predicted labels of dataset x
+    """
     prediction = np.dot(x, w)
     # sets labels that are not equal to 1 or -1 to their closer number
     prediction[prediction > 0] = 1
@@ -97,7 +98,7 @@ def compute_mse(y, tx, w):
     e = y - tx.dot(w)
 
     # y_pred = predict_labels(tx, w)y - y_pred
-    return 1 / 2 * np.mean(e ** 2)
+    return 1 / 2 * np.mean(e**2)
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -196,7 +197,7 @@ def build_poly(x, degree, col_to_expand):
     poly = np.zeros((x.shape[0], degree))
     feature = x[:, col_to_expand]
     for j in range(1, degree + 1):
-        poly[:, j - 1] = feature ** j
+        poly[:, j - 1] = feature**j
     data = np.delete(x, col_to_expand, 1)
     data = np.append(data, poly, axis=1)
 
@@ -207,7 +208,7 @@ def build_poly(x, degree, col_to_expand):
 
 
 def sigmoid(t):
-    """ Apply the sigmoid function on t.
+    """Apply the sigmoid function on t.
 
     Args:
         t: scalar or numpy array
@@ -234,7 +235,7 @@ def compute_mse_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
     e = y - tx.dot(w)
 
-    return 1 / 2 * np.mean(e ** 2)
+    return 1 / 2 * np.mean(e**2)
 
 
 def compute_loss_logistic(y, tx, w):
@@ -272,9 +273,9 @@ def compute_gradient_logistic(y, tx, w):
     y = np.reshape(y, (-1, 1))
 
     sig = sigmoid(tx.dot(w))
-    gradient = np.dot(tx.T,(sig - y))
+    gradient = np.dot(tx.T, (sig - y))
     # np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
-    return gradient/y.shape[0]
+    return gradient / y.shape[0]
 
 
 def change_labels_to_zero(y):
