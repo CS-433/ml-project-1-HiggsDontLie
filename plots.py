@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import black
 
 
 def mses_visualization(
@@ -19,7 +20,7 @@ def mses_visualization(
         x_log_scale: bool, decides if the x-axis has a log scale or not
         save_figure: if true the figure is saved as mses_title.png
 
-        """
+    """
     if x_log_scale:
         plt.semilogx(x_values, mse_tr, marker=".", color="b", label="train error")
         plt.semilogx(x_values, mse_te, marker=".", color="r", label="test error")
