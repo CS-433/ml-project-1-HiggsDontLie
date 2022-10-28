@@ -2,6 +2,7 @@ import numpy as np
 
 from helpers import *
 import math as mp
+import black
 
 
 def data_preprocessing(data, indices_zero_var=[]):
