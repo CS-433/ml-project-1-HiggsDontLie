@@ -3,6 +3,7 @@ import numpy as np
 from cross_validation import *
 from plots import *
 from helpers import *
+import black
 
 
 # set seed to be able to reproduce our results
