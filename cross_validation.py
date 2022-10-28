@@ -20,7 +20,7 @@ def build_k_indices(y, k_fold, seed):
     interval = int(num_row / k_fold)
     np.random.seed(seed)
     indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
+    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
 
@@ -132,7 +132,7 @@ def cv_gradient_des(y, x, gammas, k_fold, seed):
                 """
     k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
 
-    # For now we set these parameters as fixed values, as we aren't tuning them
+    # For now, we set these parameters as fixed values, as we aren't tuning them
     # if we wish to tune them we would need to enter them as arguments in the function
     max_iters = 100
     initial_w = np.zeros(x.shape[1])
@@ -180,7 +180,7 @@ def cv_stoch_gradient_des(y, x, gammas, k_fold, seed):
                 """
     k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
 
-    # For now we set these parameters as fixed values, as we aren't tuning them
+    # For now, we set these parameters as fixed values, as we aren't tuning them
     # if we wish to tune them we would need to enter them as arguments in the function
     max_iters = 200
     initial_w = np.zeros(x.shape[1])
@@ -193,9 +193,7 @@ def cv_stoch_gradient_des(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_sgd(
-                y_train, x_train, initial_w, max_iters, gamma
-            )
+            weights, mse_train_i = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters, gamma)
 
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
@@ -209,6 +207,96 @@ def cv_stoch_gradient_des(y, x, gammas, k_fold, seed):
 
     return mse_train, mse_test
 
+
+def cv_logistic_regression(y, x, gammas, k_fold, seed):
+    """ performs "k_fold"-cross validation of the logistic regression method
+
+                Args:
+                    y:          shape=(N,)
+                    x:          shape=(N,D)
+                    gammas:     array of the different step sizes
+                    k_fold:     scalar, the number of times we will perform the cross-validation
+                    seed:       set the seed to have reproducible results
+
+                Returns:
+                    mse_train, mse_test:    arrays of errors associated with each gamma after averaging over
+                                            k-fold cross-validation. The order in the array corresponds to the
+                                            order the gammas were given in
+
+                """
+    k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
+
+    # For now, we set these parameters as fixed values, as we aren't tuning them
+    # if we wish to tune them we would need to enter them as arguments in the function
+    max_iters = 200
+    initial_w = np.zeros(x.shape[1])
+
+    mse_train = []
+    mse_test = []
+
+    for gamma in gammas:
+        mse_train_local = []
+        mse_test_local = []
+        for k in range(k_fold):
+            x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
+            weights, mse_train_i = logistic_regression_SGD(y_train, x_train, initial_w, max_iters, gamma)
+
+            mse_test_i = compute_mse_logistic(y_test, x_test, weights)
+            mse_train_local.append(mse_train_i)
+            mse_test_local.append(mse_test_i)
+
+        mse_tr = np.mean(mse_train_local)
+        mse_te = np.mean(mse_test_local)
+
+        mse_train.append(mse_tr)
+        mse_test.append(mse_te)
+
+    return mse_train, mse_test
+
+def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
+    """ performs "k_fold"-cross validation of the regulated logistic regression method
+
+                    Args:
+                        y:          shape=(N,)
+                        x:          shape=(N,D)
+                        lambdas:    array of the different penalties to try
+                        k_fold:     scalar, the number of times we will perform the cross-validation
+                        seed:       set the seed to have reproducible results
+
+                    Returns:
+                        mse_train, mse_test:    arrays of errors associated with each gamma after averaging over
+                                                k-fold cross-validation. The order in the array corresponds to the
+                                                order the gammas were given in
+                    """
+    k_indices = build_k_indices(y, k_fold=k_fold, seed=seed)
+
+    # For now, we set these parameters as fixed values, as we aren't tuning them
+    # if we wish to tune them we would need to enter them as arguments in the function
+    max_iters = 200
+    initial_w = np.zeros(x.shape[1])
+    gamma = 0.001
+
+    mse_train = []
+    mse_test = []
+
+    for lambda_ in lambdas:
+        mse_train_local = []
+        mse_test_local = []
+        for k in range(k_fold):
+            x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
+            weights, mse_train_i = reg_logistic_regression(y_train, x_train, lambda_, initial_w, max_iters, gamma)
+
+            mse_test_i = compute_mse_logistic(y_test, x_test, weights)
+            mse_train_local.append(mse_train_i)
+            mse_test_local.append(mse_test_i)
+
+        mse_tr = np.mean(mse_train_local)
+        mse_te = np.mean(mse_test_local)
+
+        mse_train.append(mse_tr)
+        mse_test.append(mse_te)
+
+    return mse_train, mse_test
 
 def cv_ridge_reg(y, x, lambda_, k_fold, seed):
     """ performs "k_fold"-cross validation of the ridge regression method

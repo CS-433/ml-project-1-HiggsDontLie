@@ -203,11 +203,11 @@ def build_poly(x, degree, col_to_expand):
     return data
 
 
-########################### LOGISTIC
+########################### LOGISTIC ###########################
 
 
 def sigmoid(t):
-    """apply sigmoid function on t.
+    """ Apply the sigmoid function on t.
 
     Args:
         t: scalar or numpy array
@@ -217,13 +217,19 @@ def sigmoid(t):
     """
 
     sigmoid_ = np.power((1 + np.exp(-t)), -1)
-
     return sigmoid_
 
 
 def compute_mse_logistic(y, tx, w):
     """
     compute the mse for error vector e for logistic regression
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+
+    Returns:
+        scalar representing the MSE
     """
     y = np.reshape(y, (-1, 1))
     e = y - tx.dot(w)
@@ -244,10 +250,10 @@ def compute_loss_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    y = np.reshape(y, (-1, 1))
+    #y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
-    #
+
     return 1 / y.shape[0] * loss
 
 
@@ -263,13 +269,12 @@ def compute_gradient_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    y = np.reshape(y, (-1, 1))
+    #y = np.reshape(y, (-1, 1))
 
     sig = sigmoid(tx.dot(w))
-    gradient = tx.T @ (sig - y)
-
-    return np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
-    # return gradient/y.shape[0]
+    gradient = np.dot(tx.T,(sig - y))
+    # np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
+    return gradient/y.shape[0]
 
 
 def change_labels_to_zero(y):
