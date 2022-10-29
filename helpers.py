@@ -320,8 +320,8 @@ def penalized_logistic_regression(y, tx, w, lambda_):
         gradient: shape=(D, 1)
     """
 
-    penalty = lambda_ * w.T.dot(w)
-    loss = compute_loss_logistic(y, tx, w) + np.squeeze(penalty)
+    # penalty = lambda_ * w.T.dot(w)
+    loss = compute_loss_logistic(y, tx, w) '''+ np.squeeze(penalty)'''
     gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
 
     return loss, gradient
