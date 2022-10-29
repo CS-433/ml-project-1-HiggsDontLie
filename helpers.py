@@ -225,8 +225,7 @@ def sigmoid(t):
     Returns:
         scalar or numpy array
     """
-
-    sigmoid_ = np.power((1 + np.exp(-t)), -1)
+    sigmoid_ = 1.0/(1+np.exp(-t))
     return sigmoid_
 
 
@@ -262,9 +261,11 @@ def compute_loss_logistic(y, tx, w):
 
     y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
-    loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
-
-    return 1 / y.shape[0] * loss
+    part_one = -y.T @ (np.log(sig))
+    part_two = - (1 - y).T @ (np.log(1 - sig))
+    # loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
+    loss = part_one + part_two
+    return np.squeeze(loss/y.shape[0])
 
 
 def compute_gradient_logistic(y, tx, w):
@@ -285,6 +286,70 @@ def compute_gradient_logistic(y, tx, w):
     gradient = np.dot(tx.T, (sig - y))
     # np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
     return gradient / y.shape[0]
+
+
+def learning_by_gradient_descent(y, tx, w, gamma):
+    """
+    Do one step of gradient descent using logistic regression. Returns the loss and the updated w.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+        gamma: float
+
+    Returns:
+        loss: scalar number
+        w: shape=(D, 1)
+    """
+    gradient = compute_gradient_logistic(y, tx, w)
+    loss = compute_loss_logistic(y, tx, w)
+    w = w - gamma * gradient
+
+    return loss, w
+
+
+def penalized_logistic_regression(y, tx, w, lambda_):
+    """Computes the penalized logistic regression's gradient and loss
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+        lambda_: scalar
+
+    Returns:
+        loss: scalar number
+        gradient: shape=(D, 1)
+    """
+
+    penalty = lambda_ * w.T.dot(w)
+    loss = compute_loss_logistic(y, tx, w) + np.squeeze(penalty)
+    gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
+
+    return loss, gradient
+
+
+def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
+    """
+    Do one step of gradient descent, using the penalized logistic regression.
+    Return the loss and updated w.
+
+    Args:
+        y:  shape=(N, 1)
+        tx: shape=(N, D)
+        w:  shape=(D, 1)
+        gamma: scalar
+        lambda_: scalar
+
+    Returns:
+        loss: scalar number
+        w: shape=(D, 1)
+    """
+    loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
+    w = w - gamma * gradient
+
+    return loss, w
 
 
 def change_labels_to_zero(y):

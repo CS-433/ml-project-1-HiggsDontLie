@@ -1,4 +1,6 @@
 from helpers import *
+import math as mp
+import black
 
 
 def data_preprocessing(data, indices_zero_var=[]):
@@ -17,7 +19,14 @@ def data_preprocessing(data, indices_zero_var=[]):
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
-    data = change_angle(data)
+    indices = [15, 18, 20, 25, 28]
+    for i in indices:
+        cosinus = np.zeros(data.shape[0])
+        for j in range(data.shape[0]):
+            cosinus[j] = mp.cos(data[j][i])
+            data[j][i] = mp.sin(data[j][i])
+        # hstack=concatenate with axis =1
+        data = np.hstack((data, cosinus.reshape(-1, 1)))
 
     # need to get the values of PRI_jet_num before standardization
     jet_zero = (data[:, 22] == 0).astype(float)
@@ -174,6 +183,50 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
     return weights, mse
 
 
+def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
+
+    threshold = 1e-8
+    losses = []
+
+    w = initial_w
+    w = np.reshape(w, (-1, 1))
+
+    # start the logistic regression
+    for n_iter in range(max_iters):
+        # get loss and update w.
+        loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        if n_iter % 2 == 0:
+            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        # converge criterion
+        losses.append(loss)
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+
+    print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
+    return w, loss
+
+
+def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
+    threshold = 1e-8
+    losses = []
+
+    w = initial_w
+    w = np.reshape(w, (-1, 1))
+
+    # start the logistic regression
+    for n_iter in range(max_iters):
+        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+        if n_iter % 2 == 0:
+            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        # converge criterion
+        losses.append(loss)
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+
+    print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
+    return loss, w
+
+'''
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     The Gradient descent algorithm using logistic regression.
@@ -200,6 +253,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w = w - gamma * gradient
     loss = compute_loss_logistic(y, tx, w)
     return w, np.squeeze(loss)
+'''
 
 
 def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
@@ -231,7 +285,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
 
     return w, np.squeeze(loss)
 
-
+'''
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
     The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
@@ -250,6 +304,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
 
     w = initial_w
+    w = np.reshape(w, (-1, 1))
     y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
@@ -258,7 +313,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         w = w - gamma * gradient
     loss = compute_loss_logistic(y, tx, w)
     return w, np.squeeze(loss)
-
+'''
 
 def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
