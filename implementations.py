@@ -202,7 +202,6 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
     threshold = 1e-8
     losses = []
     tx = np.c_[np.ones((y.shape[0], 1)), tx]
-
     w = initial_w
     w = np.reshape(w, (-1, 1))
     loss = 0

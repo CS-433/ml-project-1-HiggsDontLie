@@ -1,6 +1,6 @@
 import numpy as np
 import csv
-
+import math as mp
 
 def standardize(x):
     """Standardize each feature of the original data set (x)
@@ -321,7 +321,8 @@ def penalized_logistic_regression(y, tx, w, lambda_):
     """
 
     # penalty = lambda_ * w.T.dot(w)
-    loss = compute_loss_logistic(y, tx, w) '''+ np.squeeze(penalty)'''
+    # + np.squeeze(penalty)
+    loss = compute_loss_logistic(y, tx, w)
     gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
 
     return loss, gradient
