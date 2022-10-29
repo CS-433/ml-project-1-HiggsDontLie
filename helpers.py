@@ -259,12 +259,9 @@ def compute_loss_logistic(y, tx, w):
         a vector of shape (D, 1)
     """
 
-    y = np.reshape(y, (-1, 1))
+    # y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
-    part_one = -y.T @ (np.log(sig))
-    part_two = - (1 - y).T @ (np.log(1 - sig))
-    # loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
-    loss = part_one + part_two
+    loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
     return np.squeeze(loss/y.shape[0])
 
 

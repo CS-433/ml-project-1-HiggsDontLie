@@ -182,7 +182,6 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
 
     return weights, mse
 
-
 def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
 
     threshold = 1e-8
