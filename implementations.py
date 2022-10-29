@@ -1,6 +1,4 @@
 from helpers import *
-import math as mp
-import black
 
 
 def data_preprocessing(data, indices_zero_var=[]):
@@ -19,14 +17,7 @@ def data_preprocessing(data, indices_zero_var=[]):
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
-    indices = [15, 18, 20, 25, 28]
-    for i in indices:
-        cosinus = np.zeros(data.shape[0])
-        for j in range(data.shape[0]):
-            cosinus[j] = mp.cos(data[j][i])
-            data[j][i] = mp.sin(data[j][i])
-        # hstack=concatenate with axis =1
-        data = np.hstack((data, cosinus.reshape(-1, 1)))
+    data = change_angle(data)
 
     # need to get the values of PRI_jet_num before standardization
     jet_zero = (data[:, 22] == 0).astype(float)
@@ -259,7 +250,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
 
     w = initial_w
-    penalty = lambda_ * w.T.dot(w)
     y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
@@ -288,7 +278,6 @@ def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
     w = initial_w
     y = change_labels_to_zero(y)
-    penalty = lambda_ * w.T.dot(w)
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss
