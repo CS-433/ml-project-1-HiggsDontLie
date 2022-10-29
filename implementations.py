@@ -182,7 +182,7 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
 
     return weights, mse
 
-
+'''
 def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
     """
         The Gradient descent algorithm using logistic regression.
@@ -257,9 +257,9 @@ def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamm
 
     print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
     return loss, w
-
-
 '''
+
+
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     The Gradient descent algorithm using logistic regression.
@@ -286,7 +286,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w = w - gamma * gradient
     loss = compute_loss_logistic(y, tx, w)
     return w, np.squeeze(loss)
-'''
+
 
 
 def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
@@ -319,7 +319,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
     return w, np.squeeze(loss)
 
 
-'''
+
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
     The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
@@ -347,7 +347,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         w = w - gamma * gradient
     loss = compute_loss_logistic(y, tx, w)
     return w, np.squeeze(loss)
-'''
+
 
 
 def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
