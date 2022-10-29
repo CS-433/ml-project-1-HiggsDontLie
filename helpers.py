@@ -1,7 +1,5 @@
 import numpy as np
 import csv
-import math as mt
-import black
 
 
 def standardize(x):
@@ -40,6 +38,7 @@ def change_angle(data):
         # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
         return data
+
 
 def remove_outliers(data):
     """Remove the outliers present in the data
