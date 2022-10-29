@@ -286,6 +286,7 @@ def change_labels_to_zero(y):
         Returns:
             a vector of shape (N, 1)
         """
+    y = np.reshape(y, (-1, 1))
     y_updated = np.ones(len(y))
     y_updated[y <= 0] = 0
     '''
