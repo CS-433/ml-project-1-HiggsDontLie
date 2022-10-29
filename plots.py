@@ -9,7 +9,7 @@ def mses_visualization(
     x_label,
     title="training and test error",
     x_log_scale=False,
-    save_figure=True
+    save_figure=True,
 ):
     """visualization the curves of the training and test mse
     Args
@@ -38,7 +38,9 @@ def mses_visualization(
         plt.savefig("mses_" + title + ".png")
 
 
-def features_degrees_visualization(mse, degrees, title="test mse of each feature at each degrees", save_figure=True):
+def features_degrees_visualization(
+    mse, degrees, title="test mse of each feature at each degrees", save_figure=True
+):
     """plots the curves of the mse depending on the degree of expansion for each feature
     Creates a plot with one subplot for each feature
         Args
@@ -48,7 +50,7 @@ def features_degrees_visualization(mse, degrees, title="test mse of each feature
             title: string, title of the graph
             save_figure: if true the figure is saved as title.png
 
-            """
+    """
     fig, axs = plt.subplots(6, 6, figsize=(35, 35))
     n = 0
     for i in range(6):
@@ -56,9 +58,9 @@ def features_degrees_visualization(mse, degrees, title="test mse of each feature
             axs[i, j].plot(degrees, mse[:, n], marker=".")
             axs[i, j].set_xlabel("degrees")
             axs[i, j].set_ylabel("mse")
-            axs[i, j].set_title("feature " + str(n+1))
+            axs[i, j].set_title("feature " + str(n + 1))
             axs[i, j].grid(True)
-            n = n+1
+            n = n + 1
     plt.show()
     if save_figure:
         plt.savefig(title + ".png")
