@@ -2,6 +2,7 @@ import numpy as np
 import csv
 import math as mp
 
+
 def standardize(x):
     """Standardize each feature of the original data set (x)
     Args:
@@ -216,6 +217,7 @@ def build_poly(x, degree, col_to_expand):
 
 # LOGISTIC
 
+
 def sigmoid(t):
     """Apply the sigmoid function on t.
 
@@ -225,7 +227,7 @@ def sigmoid(t):
     Returns:
         scalar or numpy array
     """
-    sigmoid_ = 1.0/(1+np.exp(-t))
+    sigmoid_ = 1.0 / (1 + np.exp(-t))
     return sigmoid_
 
 
@@ -262,7 +264,7 @@ def compute_loss_logistic(y, tx, w):
     # y = np.reshape(y, (-1, 1))
     sig = sigmoid(tx.dot(w))
     loss = -y.T @ (np.log(sig)) - (1 - y).T @ (np.log(1 - sig))
-    return np.squeeze(loss/y.shape[0])
+    return np.squeeze(loss / y.shape[0])
 
 
 def compute_gradient_logistic(y, tx, w):
@@ -353,18 +355,18 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
 def change_labels_to_zero(y):
     """changing the labels from {-1;1} to {0;1}
 
-        Args:
-            y:  shape=(N, 1), the labels to be changed
+    Args:
+        y:  shape=(N, 1), the labels to be changed
 
-        Returns:
-            a vector of shape (N, 1)
-        """
+    Returns:
+        a vector of shape (N, 1)
+    """
     y_updated = np.ones(len(y))
 
     for i in range(len(y)):
         if y[i] <= 0:
             y_updated[i] = 0
-    #y_updated[y <= 0] = 0
+    # y_updated[y <= 0] = 0
 
     return y_updated
 
@@ -379,6 +381,7 @@ def change_labels_to_minusone(y):
     # y_updated[y == 0] = -1
 
     return y_updated
+
 
 def predict_labels_logistic(x, w):
     """returns the predicted labels given data set x and weights w for logistic regression
