@@ -30,6 +30,17 @@ def find_low_variance(std_dev, threshold):
     return indices
 
 
+def change_angle(data):
+    indices = [15, 18, 20, 25, 28]
+    for i in indices:
+        cosinus = np.zeros(data.shape[0])
+        for j in range(data.shape[0]):
+            cosinus[j] = mp.cos(data[j][i])
+            data[j][i] = mp.sin(data[j][i])
+        # hstack=concatenate with axis =1
+        data = np.hstack((data, cosinus.reshape(-1, 1)))
+        return data
+
 def remove_outliers(data):
     """Remove the outliers present in the data
 
