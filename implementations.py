@@ -199,7 +199,7 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
             w: shape=(D, 1)
         """
 
-    threshold = 1e-8
+    # threshold = 1e-8
     losses = []
 
     w = initial_w
@@ -210,13 +210,15 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
     for n_iter in range(max_iters):
         # get loss and update w.
         loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        '''
         if n_iter % 2 == 0:
             print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
         # converge criterion
         losses.append(loss)
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
-    print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
+    print("loss={l}".format(l=compute_loss_logistic(y, tx, w))) '''
+
     return w, loss
 
 
