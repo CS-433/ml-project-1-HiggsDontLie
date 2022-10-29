@@ -182,13 +182,29 @@ def polynomial_regression(y, tx, degree, col_to_expand=-1):
 
     return weights, mse
 
+
 def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
+    """
+        The Gradient descent algorithm using logistic regression.
+
+        Args:
+            y: numpy array of shape=(N, )
+            tx: numpy array of shape=(N,D)
+            initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+            max_iters: a scalar denoting the total number of iterations of GD
+            gamma: a scalar (float) that denotes the step size
+
+        Returns:
+            loss: scalar number
+            w: shape=(D, 1)
+        """
 
     threshold = 1e-8
     losses = []
 
     w = initial_w
     w = np.reshape(w, (-1, 1))
+    loss = 0
 
     # start the logistic regression
     for n_iter in range(max_iters):
@@ -200,14 +216,29 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
         losses.append(loss)
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
-
     print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
     return w, loss
 
 
 def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
+    """
+        The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
+
+        Args:
+            y: numpy array of shape=(N, )
+            tx: numpy array of shape=(N,D)
+            lambda_: a scalar that will lead to the penalty term
+            initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+            max_iters: a scalar denoting the total number of iterations of GD
+            gamma: a scalar denoting the step size
+
+        Returns:
+            loss: the loss value (scalar) of the last iteration of GD
+            w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
+        """
     threshold = 1e-8
     losses = []
+    loss = 0
 
     w = initial_w
     w = np.reshape(w, (-1, 1))
@@ -224,6 +255,7 @@ def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamm
 
     print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
     return loss, w
+
 
 '''
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -284,6 +316,7 @@ def logistic_regression_SGD(y, tx, initial_w, max_iters, gamma):
 
     return w, np.squeeze(loss)
 
+
 '''
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
@@ -313,6 +346,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     loss = compute_loss_logistic(y, tx, w)
     return w, np.squeeze(loss)
 '''
+
 
 def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
