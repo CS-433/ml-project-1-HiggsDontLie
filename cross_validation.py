@@ -307,6 +307,7 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
     return mse_train, mse_test
 
 
+
 def cv_ridge_reg(y, x, lambda_, k_fold, seed):
     """performs "k_fold"-cross validation of the ridge regression method
 
@@ -414,6 +415,36 @@ def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
         for n in range(x.shape[1] - 4):
             x_poly = build_poly(x_poly, d, col_to_expand=1)
         mse_tr_i, mse_te_i = cv_ridge_reg(y, x_poly, lambdas, k_fold, seed)
+        best_index = np.argmin(mse_te_i)
+        best_lambdas.append(lambdas[best_index])
+        best_mses.append(mse_te_i[best_index])
+
+    ind_best_degree = np.argmin(best_mses)
+
+    return np.min(best_mses), degrees[ind_best_degree], best_lambdas[ind_best_degree]
+
+def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
+    """performs "k_fold"-cross validation of the ridge regression on logistic regression method on different polynomial expansions of data x
+
+    Args:
+        y:          shape=(N,)
+        x:          shape=(N,D) data set with an offset as the first column (col of 1s)
+        degrees: array, different degrees to which all features should be elevated
+        k_fold:     scalar, the number of times we will perform the cross-validation
+        lambdas:    array, penalty applied on the weights
+        seed:       set the seed to have reproducible results
+
+    Returns:
+        smallest test mse found, the degree and lambda used to find this mse
+
+    """
+    best_lambdas = []
+    best_mses = []
+    for d in degrees:
+        x_poly = x
+        for n in range(x.shape[1] - 4):
+            x_poly = build_poly(x_poly, d, col_to_expand=1)
+        mse_tr_i, mse_te_i = cv_reg_logistic_regression(y, x_poly, lambdas, k_fold, seed)
         best_index = np.argmin(mse_te_i)
         best_lambdas.append(lambdas[best_index])
         best_mses.append(mse_te_i[best_index])

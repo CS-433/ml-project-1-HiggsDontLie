@@ -14,6 +14,40 @@ y, data, labels = load_csv_data("train.csv")
 # we found no features with low variance, so indices_zero_var is an empty array
 x = data_preprocessing(data)
 
+# compute mse on train and test sets for logistic regression after cross validation:
+
+# set seed to be able to reproduce our results
+# seed = 1
+# 10-fold cross-validation (cv)
+# k_fold = 10
+# y, data, labels = load_csv_data("train.csv")
+# we found no features with low variance, so indices_zero_var is an empty array
+# x = data_preprocessing(data)
+# initial_w = np.zeros(x.shape[1])
+# max_iters = 100
+# gammas = np.logspace(-5, -1, 15)
+
+# gamma_mse_train, gamma_mse_test = cv_logistic_regression(y, x, gammas, k_fold, seed)
+# mses_visualization(gamma_mse_train, gamma_mse_test, gammas, 'gamma', x_log_scale=True, title="train and test error LR")
+
+# min_error_train = min(gamma_mse_train)
+# min_error_test = min(gamma_mse_test)
+
+# min_gamma_train = gammas[np.where(gamma_mse_train == min_error_train)]
+# min_gamma_test = gammas[np.where(gamma_mse_test == min_error_test)]
+
+# print("Min gamma train:", min_gamma_train)
+# Min gamma train: [0.01389495]
+# print("Min error train:", min_error_train)
+# Min error train: 0.5681829093377588
+
+# print("Min gamma test:", min_gamma_test)
+# Min gamma test: [0.00372759]
+# print("Min error test:", min_error_test)
+# Min error test: 0.39531978100633747
+
+
+
 # compute mse on train and test sets for least squares after cv
 # mse_tr, mse_te = cv_least_squares(y, x, 7, seed)
 
