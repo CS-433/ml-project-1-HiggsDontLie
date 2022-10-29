@@ -289,14 +289,20 @@ def compute_gradient_logistic(y, tx, w):
 
 
 def change_labels_to_zero(y):
-    # Change labels from {-1,1} to {0,1}
+    """changing the labels from {-1;1} to {0;1}
+
+        Args:
+            y:  shape=(N, 1), the labels to be changed
+
+        Returns:
+            a vector of shape (N, 1)
+        """
     y_updated = np.ones(len(y))
 
     for i in range(len(y)):
         if y[i] <= 0:
             y_updated[i] = 0
-
-    # y_updated[y == -1] = 0
+    #y_updated[y <= 0] = 0
 
     return y_updated
 
@@ -306,8 +312,24 @@ def change_labels_to_minusone(y):
     y_updated = np.ones(len(y))
 
     for i in range(len(y)):
-        if y[i] == 0:
+        if y[i] <= 0.5:
             y_updated[i] = -1
     # y_updated[y == 0] = -1
 
     return y_updated
+
+def predict_labels_logistic(x, w):
+    """returns the predicted labels given data set x and weights w for logistic regression
+
+    Args:
+        x: shape=(N,D), data set from which we want to predict our labels
+        w: shape=(D,), weights used to make prediction
+
+    Returns:
+        the predicted labels of dataset x
+    """
+    prediction = np.dot(x, w)
+    # sets labels that are not equal to 1 or -1 to their closer number
+    prediction[prediction > 0.5] = 1
+    prediction[prediction <= 0.5] = -1
+    return prediction
