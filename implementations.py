@@ -259,7 +259,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
 
     w = initial_w
-    penality = lambda_ * w.T.dot(w)
+    penalty = lambda_ * w.T.dot(w)
     y = change_labels_to_zero(y)
     for n_iter in range(max_iters):
         # compute gradient
@@ -288,7 +288,7 @@ def reg_logistic_regression_SGD(y, tx, lambda_, initial_w, max_iters, gamma):
     """
     w = initial_w
     y = change_labels_to_zero(y)
-    penality = lambda_ * w.T.dot(w)
+    penalty = lambda_ * w.T.dot(w)
     for n_iter in range(max_iters):
         for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute gradient and loss

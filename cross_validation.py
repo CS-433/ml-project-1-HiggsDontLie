@@ -242,9 +242,7 @@ def cv_logistic_regression(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = logistic_regression_SGD(
-                y_train, x_train, initial_w, max_iters, gamma
-            )
+            weights, mse_train_i = logistic_regression_SGD(y_train, x_train, initial_w, max_iters, gamma)
 
             mse_test_i = compute_mse_logistic(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
