@@ -279,22 +279,24 @@ def compute_gradient_logistic(y, tx, w):
 
 def change_labels_to_zero(y):
     # Change labels from {-1,1} to {0,1}
-    n = y.shape[0]
-    y_updated = np.ones(n)
-    '''
+    y_updated = np.ones(len(y))
+
     for i in range(len(y)):
-        if y[i] <= 0:
+        if y[i] == -1:
             y_updated[i] = 0
-    '''
-    y_updated[y == -1] = 0
+
+    # y_updated[y == -1] = 0
 
     return y_updated
 
 
 def change_labels_to_minusone(y):
     # Change labels from {0,1} to{-1,1}
-    n = y.shape[0]
-    y_updated = np.ones(n)
-    y_updated[y == 0] = -1
+    y_updated = np.ones(len(y))
+
+    for i in range(len(y)):
+        if y[i] == 0:
+            y_updated[i] = -1
+    # y_updated[y == 0] = -1
 
     return y_updated
