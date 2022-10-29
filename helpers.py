@@ -282,7 +282,7 @@ def change_labels_to_zero(y):
     y_updated = np.ones(len(y))
 
     for i in range(len(y)):
-        if y[i] == -1:
+        if y[i] <= 0:
             y_updated[i] = 0
 
     # y_updated[y == -1] = 0
