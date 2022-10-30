@@ -212,7 +212,7 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
     return w, loss
 
 
-def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters=50, gamma=0.01):
     """
         The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
 
@@ -230,9 +230,7 @@ def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamm
         """
 
     w = initial_w
-    print(w)
     w = np.reshape(w, (-1, 1))
-    print(w)
     y = change_labels_to_zero(y)
 
     # start the logistic regression
