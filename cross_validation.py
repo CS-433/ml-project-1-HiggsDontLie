@@ -363,9 +363,7 @@ def find_best_degree(y, x):
         # we start at 1 because degree 0 is just columns of 1s
         for d in np.arange(1, degrees + 1):
             # 10-fold cv
-            mse_tr_i, mse_te_i = cv_polynomial_reg(
-                y, x, d, k_fold=10, seed=1, col_to_expand=c
-            )
+            mse_tr_i, mse_te_i = cv_polynomial_reg(y, x, d, k_fold=10, seed=1, col_to_expand=c)
             mse_tr[d - 1, c - 1] = mse_tr_i
             mse_te[d - 1, c - 1] = mse_te_i
     # returns an array of the best degree for each feature (= row index of each column + 1 since we start with degree=1)
