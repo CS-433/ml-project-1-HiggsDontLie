@@ -241,7 +241,9 @@ def cv_logistic_regression(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = logistic_regression_break(y_train, x_train, initial_w, gamma=gamma)
+            weights, mse_train_i = logistic_regression_break(
+                y_train, x_train, initial_w, gamma=gamma
+            )
 
             mse_train_i = compute_mse_logistic(y_train, x_train, weights)
             mse_test_i = compute_mse_logistic(y_test, x_test, weights)
@@ -289,7 +291,9 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, loss_i = reg_logistic_regression_break(y_train, x_train, lambda_, initial_w, max_iters, gamma)
+            weights, loss_i = reg_logistic_regression_break(
+                y_train, x_train, lambda_, initial_w, max_iters, gamma
+            )
 
             mse_train_i = compute_mse_logistic(y_train, x_train, weights)
             mse_test_i = compute_mse_logistic(y_test, x_test, weights)
@@ -442,7 +446,9 @@ def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
         x_poly = x
         for n in range(x.shape[1] - 4):
             x_poly = build_poly(x_poly, d, col_to_expand=1)
-        mse_tr_i, mse_te_i = cv_reg_logistic_regression(y, x_poly, lambdas, k_fold, seed)
+        mse_tr_i, mse_te_i = cv_reg_logistic_regression(
+            y, x_poly, lambdas, k_fold, seed
+        )
         best_index = np.argmin(mse_te_i)
         best_lambdas.append(lambdas[best_index])
         best_mses.append(mse_te_i[best_index])

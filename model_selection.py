@@ -13,7 +13,7 @@ k_fold = 10
 y, data, labels = load_csv_data("train.csv")
 # we found no features with low variance, so indices_zero_var is an empty array
 x = data_preprocessing(data)
-'''
+"""
 # CV RIDGE POLY LOGISTIC 
 # set seed to be able to reproduce our results
 seed = 1
@@ -38,7 +38,7 @@ print ("Best Degrees:", best_degrees)
 Best Degrees: 2
 print ("Best Lambdas:", best_lambdas)
 Best Lambdas: 0.19306977288832497
-'''
+"""
 
 # compute mse on train and test sets for logistic regression after cross validation:
 
