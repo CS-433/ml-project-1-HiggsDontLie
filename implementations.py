@@ -211,6 +211,35 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
     return w, loss
 
 
+def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
+    """
+        The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
+
+        Args:
+            y: numpy array of shape=(N, )
+            tx: numpy array of shape=(N,D)
+            lambda_: a scalar that will lead to the penalty term
+            initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
+            max_iters: a scalar denoting the total number of iterations of GD
+            gamma: a scalar denoting the step size
+
+        Returns:
+            loss: the loss value (scalar) of the last iteration of GD
+            w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
+        """
+
+    w = initial_w
+    w = np.reshape(w, (-1, 1))
+
+    # start the logistic regression
+    for n_iter in range(max_iters):
+        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+
+    loss = compute_loss_logistic(y, tx, w)
+    print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
+    return loss, w
+
+
 def logistic_regression_break(y, tx, initial_w, max_iters=50, gamma=0.01):
     """
         The Gradient descent algorithm using logistic regression.
@@ -248,33 +277,7 @@ def logistic_regression_break(y, tx, initial_w, max_iters=50, gamma=0.01):
     loss = compute_loss_logistic(y,tx,w)
     return w, loss
 
-def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
-    """
-        The Gradient Descent algorithm (GD) using logistic regression and adding a regulatory term
 
-        Args:
-            y: numpy array of shape=(N, )
-            tx: numpy array of shape=(N,D)
-            lambda_: a scalar that will lead to the penalty term
-            initial_w: numpy array of shape=(D, ). The initial guess (or the initialization) for the model parameters
-            max_iters: a scalar denoting the total number of iterations of GD
-            gamma: a scalar denoting the step size
-
-        Returns:
-            loss: the loss value (scalar) of the last iteration of GD
-            w: numpy arrays of shape (D, ) containing the model parameters from the last iteration of SGD
-        """
-
-    w = initial_w
-    w = np.reshape(w, (-1, 1))
-
-    # start the logistic regression
-    for n_iter in range(max_iters):
-        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
-
-    loss = compute_loss_logistic(y, tx, w)
-    print("loss={l}".format(l=compute_loss_logistic(y, tx, w)))
-    return loss, w
 
 def reg_logistic_regression_break(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamma=0.01):
     """
