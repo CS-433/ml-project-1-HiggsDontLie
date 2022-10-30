@@ -18,7 +18,7 @@ def build_k_indices(y, k_fold, seed):
     interval = int(num_row / k_fold)
     np.random.seed(seed)
     indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
+    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
 
@@ -147,7 +147,9 @@ def cv_gradient_des(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_gd(y_train, x_train, initial_w, max_iters, gamma)
+            weights, mse_train_i = mean_squared_error_gd(
+                y_train, x_train, initial_w, max_iters, gamma
+            )
 
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
@@ -194,7 +196,9 @@ def cv_stoch_gradient_des(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = mean_squared_error_sgd(y_train, x_train, initial_w, max_iters, gamma)
+            weights, mse_train_i = mean_squared_error_sgd(
+                y_train, x_train, initial_w, max_iters, gamma
+            )
 
             mse_test_i = compute_mse(y_test, x_test, weights)
             mse_train_local.append(mse_train_i)
@@ -240,7 +244,9 @@ def cv_logistic_regression(y, x, gammas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, mse_train_i = logistic_regression_break(y_train, x_train, initial_w, gamma=gamma)
+            weights, mse_train_i = logistic_regression_break(
+                y_train, x_train, initial_w, gamma=gamma
+            )
 
             mse_train_i = compute_mse_logistic(y_train, x_train, weights)
             mse_test_i = compute_mse_logistic(y_test, x_test, weights)
@@ -289,7 +295,9 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
         mse_test_local = []
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
-            weights, loss_i = reg_logistic_regression_break(y_train, x_train, lambda_, initial_w, max_iters, gamma)
+            weights, loss_i = reg_logistic_regression_break(
+                y_train, x_train, lambda_, initial_w, max_iters, gamma
+            )
 
             mse_train_i = compute_mse_logistic(y_train, x_train, weights)
             mse_test_i = compute_mse_logistic(y_test, x_test, weights)
@@ -363,11 +371,13 @@ def find_best_degree(y, x):
         # we start at 1 because degree 0 is just columns of 1s
         for d in np.arange(1, degrees + 1):
             # 10-fold cv
-            mse_tr_i, mse_te_i = cv_polynomial_reg(y, x, d, k_fold=10, seed=1, col_to_expand=c)
+            mse_tr_i, mse_te_i = cv_polynomial_reg(
+                y, x, d, k_fold=10, seed=1, col_to_expand=c
+            )
             mse_tr[d - 1, c - 1] = mse_tr_i
             mse_te[d - 1, c - 1] = mse_te_i
     # returns an array of the best degree for each feature (= row index of each column + 1 since we start with degree=1)
-    return np.argmin(mse_te, axis=0) + 1,  mse_te
+    return np.argmin(mse_te, axis=0) + 1, mse_te
 
 
 def cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed=1):
@@ -448,7 +458,9 @@ def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
         x_poly = x
         for n in range(x.shape[1] - 4):
             x_poly = build_poly(x_poly, d, col_to_expand=1)
-        mse_tr_i, mse_te_i = cv_reg_logistic_regression(y, x_poly, lambdas, k_fold, seed)
+        mse_tr_i, mse_te_i = cv_reg_logistic_regression(
+            y, x_poly, lambdas, k_fold, seed
+        )
         best_index = np.argmin(mse_te_i)
         best_lambdas.append(lambdas[best_index])
         best_mses.append(mse_te_i[best_index])

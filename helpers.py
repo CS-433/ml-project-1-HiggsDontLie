@@ -69,7 +69,9 @@ def remove_outliers(data):
 
     means = np.mean(data, axis=0)
     std_devs = np.std(data, axis=0)
-    boolean_matrix = np.logical_or(data > means + 3 * std_devs, data < means - 3 * std_devs)
+    boolean_matrix = np.logical_or(
+        data > means + 3 * std_devs, data < means - 3 * std_devs
+    )
     data[boolean_matrix] = np.NaN
     data = np.nan_to_num(data, nan=np.nanmedian(data, axis=0))
 
@@ -271,6 +273,7 @@ def build_poly(x, degree, col_to_expand):
 
 # LOGISTIC
 
+
 def sigmoid(t):
     """
     Apply the sigmoid function on t.
@@ -426,13 +429,13 @@ def change_labels_to_zero(y):
 
 def change_labels_to_minusone(y):
     """
-       Function to change the labels from {0;1} to {-1;1}
+    Function to change the labels from {0;1} to {-1;1}
 
-       Arguments:
-           - y:  shape=(N, 1), numpy array of the labels to be changed
+    Arguments:
+        - y:  shape=(N, 1), numpy array of the labels to be changed
 
-       Returns:
-           - - y_updated: a vector of shape (N, 1) with the updated labels
+    Returns:
+        - - y_updated: a vector of shape (N, 1) with the updated labels
     """
     y_updated = np.ones(len(y))
     for i in range(len(y)):

@@ -34,11 +34,13 @@ def mses_visualization(
     plt.legend(loc=2)
     plt.grid(True)
     if save_figure:
-        plt.savefig(r'plots\mses_' + title + '.png')
+        plt.savefig(r"plots\mses_" + title + ".png")
     plt.show()
 
 
-def features_degrees_visualization(mse, degrees, title="test mse of each feature at each degrees", save_figure=True):
+def features_degrees_visualization(
+    mse, degrees, title="test mse of each feature at each degrees", save_figure=True
+):
     """
     Plots the curves of the mse with respect to the degree of expansion for each feature
     Arguments:
@@ -60,5 +62,5 @@ def features_degrees_visualization(mse, degrees, title="test mse of each feature
     axs.flatten()[-2].axis("off")
     axs.flatten()[-1].axis("off")
     if save_figure:
-        plt.savefig(r'plots\_' + title + '.png')
+        plt.savefig(r"plots\_" + title + ".png")
     plt.show()

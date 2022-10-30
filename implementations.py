@@ -19,7 +19,7 @@ def data_preprocessing(data):
     Returns:
         - The preprocessed data
 
-       """
+    """
 
     # find -999 values
     boolean_matrix = data == -999
@@ -45,7 +45,8 @@ def data_preprocessing(data):
 
     # change the categorical feature PRI_jet_num into dummy variables
     data = np.concatenate(
-        (data,
+        (
+            data,
             jet_zero.reshape(-1, 1),
             jet_one.reshape(-1, 1),
             jet_two.reshape(-1, 1),
@@ -65,22 +66,22 @@ def data_preprocessing(data):
 
 def data_preprocessing_improved(data, col_to_remove):
     """
-       Improved function to pre-process the data. Several things are done in this function, namely:
-           - It removes the -999 data points and replaces them with the median
-           - It removes the outliers and replaces them to +/- 3xSD (3 times the standard deviation)
-           - It removes the columns of indices specified by col_to_remove
-           - It makes four dummy variables our of the categorical feature PRI_jet_num and removes the original one
-           - The angle features are changed to their sine and cosine
-           - It standardizes the data
-           - It adds a column of ones to have an offset
+    Improved function to pre-process the data. Several things are done in this function, namely:
+        - It removes the -999 data points and replaces them with the median
+        - It removes the outliers and replaces them to +/- 3xSD (3 times the standard deviation)
+        - It removes the columns of indices specified by col_to_remove
+        - It makes four dummy variables our of the categorical feature PRI_jet_num and removes the original one
+        - The angle features are changed to their sine and cosine
+        - It standardizes the data
+        - It adds a column of ones to have an offset
 
-       Arguments:
-           - data: data to preprocess
-           - col_to_remove: np.array of the indices of the columns to be removed
+    Arguments:
+        - data: data to preprocess
+        - col_to_remove: np.array of the indices of the columns to be removed
 
-       Returns:
-           - The preprocessed data
-     """
+    Returns:
+        - The preprocessed data
+    """
 
     # find -999 values
     boolean_matrix = data == -999
@@ -222,7 +223,9 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, batch_size=1):
     w = initial_w
 
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+        for y_batch, tx_batch in batch_iter(
+            y, tx, batch_size=batch_size, num_batches=1
+        ):
             # compute gradient and loss
             gradient = compute_gradient(y_batch, tx_batch, w)
             # update w
@@ -358,7 +361,9 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters=200, gamma=0.01
     return w, loss
 
 
-def reg_logistic_regression_break(y, tx, initial_w, lambda_=0.0005, max_iters=200, gamma=0.01):
+def reg_logistic_regression_break(
+    y, tx, initial_w, lambda_=0.0005, max_iters=200, gamma=0.01
+):
     """
     The Gradient descent algorithm using regularized logistic regression with a conditional break if the loss
     of the last 2 iterations are too similar (difference smaller than a threshold), meaning the algorithm has

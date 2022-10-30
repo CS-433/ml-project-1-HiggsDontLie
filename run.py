@@ -16,7 +16,7 @@ y_test = predict_labels(x_test, weights)
 # create the submission file
 create_csv_submission(ids_test, y_test, "pred_ridge_e7_degree10_pre-processing2.csv")
 
-'''
+"""
 # train the model on the training set
 # weights, mse_train = least_squares(yin, x_train)
 # weights, mse_train = ridge_regression(y_train, x_train, 0.1)
@@ -30,4 +30,4 @@ y_test = predict_labels(x_test, weights)
 # create_csv_submission(ids_test, y_test, "pred_least_squares.csv")
 # create_csv_submission(ids_test, y_test, "pred_ridge_regression.csv")
 # create_csv_submission(ids_test, y_test, "pred_ridge0001_degree9.csv")
-create_csv_submission(ids_test, y_test, "pred_ridge_e7_degree9_median.csv")  # best model so far '''
+create_csv_submission(ids_test, y_test, "pred_ridge_e7_degree9_median.csv")  # best model so far """
