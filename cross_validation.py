@@ -263,7 +263,7 @@ def cv_logistic_regression(y, x, gammas, k_fold, seed):
     return mse_train, mse_test
 
 
-def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
+def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed,  gamma=0.00719686):
     """
     Performs the "k_fold"-cross validation of the regulated logistic regression method
 
@@ -273,6 +273,7 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
         - lambdas:    array of the different penalties to try
         - k_fold:     scalar, the number of times we will perform the cross-validation
         - seed:       set the seed to have reproducible results
+        - gamma       the step size, default value is the best gamma found in cv_logistic_regression
 
     Returns:
         - mse_train, mse_test:    arrays of errors associated with each gamma after averaging over
@@ -285,7 +286,6 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
     # if we wish to tune them we would need to enter them as arguments in the function
     max_iters = 200
     initial_w = np.zeros(x.shape[1])
-    gamma = 0.00372759
 
     mse_train = []
     mse_test = []
