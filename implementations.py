@@ -201,6 +201,7 @@ def logistic_regression(y, tx, initial_w, max_iters=50, gamma=0.01):
 
     w = initial_w
     w = np.reshape(w, (-1, 1))
+    y = change_labels_to_zero(y)
 
     # start the logistic regression
     for n_iter in range(max_iters):
@@ -230,6 +231,7 @@ def reg_logistic_regression(y, tx, initial_w, lambda_=0.0005, max_iters=50, gamm
 
     w = initial_w
     w = np.reshape(w, (-1, 1))
+    y = change_labels_to_zero(y)
 
     # start the logistic regression
     for n_iter in range(max_iters):
