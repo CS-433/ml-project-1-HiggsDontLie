@@ -21,7 +21,7 @@ def build_k_indices(y, k_fold, seed):
     interval = int(num_row / k_fold)
     np.random.seed(seed)
     indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval : (k + 1) * interval] for k in range(k_fold)]
+    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
 
@@ -83,13 +83,13 @@ def cv_least_squares(y, x, k_fold, seed):
 def cv_polynomial_reg(y, x, degree, k_fold, seed, col_to_expand=-1):
     """performs "k_fold"-cross validation of the polynomial regression method
 
-    Args:
-        y:          shape=(N,)
-        x:          shape=(N,D)
-        degree:     scalar, degree to which the feature need to be expanded
-        col_to_expand list, which features will be expanded
-        k_fold:     scalar, the number of times we will perform the cross-validation
-        seed:       set the seed to have reproducible results
+    Arguments:
+        - y:              shape=(N,)
+        - x:              shape=(N,D)
+        - degree:         scalar, degree to which the feature need to be expanded
+        - k_fold:         scalar, the number of times we will perform the cross-validation
+        - seed:           set the seed to have reproducible results
+        - col_to_expand:  list, which features will be expanded
 
     Returns:
         mse_tr, mse_te: the train and test error found by averaging all the train and test errors of each fold
@@ -426,7 +426,9 @@ def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
 
 
 def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
-    """performs "k_fold"-cross validation of the ridge regression on logistic regression method on different polynomial expansions of data x
+    """
+    Performs "k_fold"-cross validation of the ridge regression on logistic regression method on
+    different polynomial expansions of data x
 
     Args:
         y:          shape=(N,)

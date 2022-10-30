@@ -4,12 +4,13 @@ import math as mp
 
 
 def standardize(x):
-    """Standardize each feature of the original data set (x)
-    Args:
-        x: a data set of size (N,D) with the columns corresponding to the features
+    """
+    Standardize each feature of the original data set (x)
+    Arguments:
+        - x: a data set of size (N,D) with the columns corresponding to the features
 
     Returns:
-        standardize_x: the standardized data
+        - standardize_x: the standardized data
     """
     mean_x = np.mean(x, axis=0)
     standardized_x = x - mean_x
@@ -19,18 +20,32 @@ def standardize(x):
 
 
 def find_low_variance(std_dev, threshold):
-    """Args:
-    std_dev: numpy array of size (N,)
-    threshold: float
+    """
+    Function that finds the indices of the columns that have a low variance
+
+    Arguments:
+        - std_dev: numpy array of size (N,)
+        - threshold: float
+
     Returns:
-         the indices of the standard deviations that are lower than the threshold
+        - indices: the indices of the features where the standard deviation is lower than the threshold
     """
     indices = np.where(np.abs(std_dev) < threshold)
     return indices
 
 
-def change_angle(data):
-    indices = [15, 18, 20, 25, 28]
+def change_angle(data, indices):
+    """
+    Function that changes the features that are angles to their sine and cosine
+
+    Arguments:
+        - data: the data where the features are to be changed
+        - indices: the indices of the columns to be changed
+
+    Returns:
+        - data: the data with the changed features
+    """
+
     for i in indices:
         cosinus = np.zeros(data.shape[0])
         for j in range(data.shape[0]):
@@ -38,24 +53,23 @@ def change_angle(data):
             data[j][i] = mp.sin(data[j][i])
         # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
-        return data
+    return data
 
 
 def remove_outliers(data):
-    """Remove the outliers present in the data
+    """
+    Change the value of the outliers present in the data to the median of the feature
 
-    Args:
-        data:
+    Arguments:
+        - data: the data where we want the outliers to be changed
 
     Returns:
-
+        - data: data where outliers have been changed to the median value of the column
     """
 
     means = np.mean(data, axis=0)
     std_devs = np.std(data, axis=0)
-    boolean_matrix = np.logical_or(
-        data > means + 3 * std_devs, data < means - 3 * std_devs
-    )
+    boolean_matrix = np.logical_or(data > means + 3 * std_devs, data < means - 3 * std_devs)
     data[boolean_matrix] = np.NaN
     data = np.nan_to_num(data, nan=np.nanmedian(data, axis=0))
 
@@ -63,13 +77,14 @@ def remove_outliers(data):
 
 
 def remove_outliers_to_std(data):
-    """Remove the outliers present in the data
+    """
+    Change the value of the outliers present in the data to +/- 3x the standard deviation of the feature
 
-    Args:
-        data:
+    Arguments:
+        - data: the data where we want the outliers to be changed
 
     Returns:
-
+        - data: data where outliers have been changed to the +/- 3x the standard deviation of the column
     """
 
     means = np.mean(data, axis=0)
@@ -85,16 +100,18 @@ def remove_outliers_to_std(data):
 
 
 def features_poly_extension(x, best_degrees):
-    """Polynomial extension of the dataset where each feature is put to the degree giving the smallest error
+    """
+    Polynomial extension of the dataset where each feature is put to the degree giving the smallest error
     The first column is not extended since it's the offset (column of 1s)
 
-           Args:
-               x: shape=(N+1,D), data set we want to extend with polynomials
-               best_degrees: list of degrees to put all the features we want to extend
+    Arguments:
+        - x: shape=(N+1,D), data set we want to extend with polynomials
+        - best_degrees: list of degrees to put all the features we want to extend
 
-           Returns:
-               the polynomially extended data set x
+    Returns:
+        - x: the polynomially extended data set x
     """
+
     for i in range(len(best_degrees)):
         x = build_poly(x, best_degrees[i], col_to_expand=1)
 
@@ -102,14 +119,15 @@ def features_poly_extension(x, best_degrees):
 
 
 def predict_labels(x, w):
-    """returns the predicted labels given data set x and weights w
+    """
+    Returns the predicted labels given data set x and weights w
 
-    Args:
-        x: shape=(N,D), data set from which we want to predict our labels
-        w: shape=(D,), weights used to make prediction
+    Arguments:
+        - x: shape=(N,D), data set from which we want to predict our labels
+        - w: shape=(D,), weights used to make prediction
 
     Returns:
-        the predicted labels of dataset x
+        - prediction: numpy array of the predicted labels of dataset x
     """
     prediction = np.dot(x, w)
     # sets labels that are not equal to 1 or -1 to their closer number
@@ -119,23 +137,33 @@ def predict_labels(x, w):
 
 
 def compute_mse(y, tx, w):
-    """Calculate the loss using either MSE
-    Args:
-        y: shape=(N, )
-        tx: shape=(N,D)
-        w: shape=(D,). The vector of model parameters.
+    """
+    Calculate the loss using MSE
+    Arguments:
+        - y: shape=(N, )
+        - tx: shape=(N,D)
+        - w: shape=(D,). The vector of model parameters.
 
     Returns:
-        the value of the loss (a scalar), corresponding to the input parameters w.
+        - a scalar, the value of the mse for the given parameters
     """
     e = y - tx.dot(w)
 
-    # y_pred = predict_labels(tx, w)y - y_pred
     return 1 / 2 * np.mean(e**2)
 
 
 def load_csv_data(data_path, sub_sample=False):
-    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+    """
+    Loads data and returns y (class labels), tX (features) and ids (event ids)
+
+    Arguments:
+        - data_path: the path of the data to load
+
+    Returns:
+        - yb: numpy array with the labels
+        - input_data: the data
+        - ids: the ids of the dataset
+    """
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
@@ -157,9 +185,11 @@ def load_csv_data(data_path, sub_sample=False):
 def create_csv_submission(ids, y_pred, name):
     """
     Creates an output file in .csv format for submission to Kaggle or AIcrowd
-    Arguments: ids (event ids associated with each prediction)
-               y_pred (predicted class labels)
-               name (string name of .csv output file to be created)
+
+    Arguments:
+        - ids: event ids associated with each prediction
+        - y_pred: predicted class labels
+        - name: string name of .csv output file to be created
     """
     with open(name, "w") as csvfile:
         fieldnames = ["Id", "Prediction"]
@@ -170,14 +200,15 @@ def create_csv_submission(ids, y_pred, name):
 
 
 def compute_gradient(y, tx, w):
-    """Computes the gradient at w.
-    Args:
-        y: numpy array of shape=(N, )
-        tx: numpy array of shape=(N,D)
-        w: numpy array of shape=(D, ). The vector of model parameters.
+    """
+    Computes the gradient at w.
+    Arguments:
+        - y: numpy array of shape=(N, )
+        - tx: numpy array of shape=(N,D)
+        - w: numpy array of shape=(D, ). The vector of model parameters.
 
     Returns:
-        An numpy array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
+        - gradient: numpy array of shape (D, ) (same shape as w), containing the gradient of the loss at w.
     """
     e = y - tx.dot(w)
     n = y.shape[0]
@@ -191,9 +222,12 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
     Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
     Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the mini batches
-    Example of use :
-    for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
-        <DO-SOMETHING>
+
+    Arguments:
+        - y: numpy array of shape=(N, )
+        - tx: numpy array of shape=(N,D)
+        - batch_size: the size of the batch
+        - num_batches: the number of batches, default value is
     """
     data_size = len(y)
 
@@ -212,20 +246,18 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 
 def build_poly(x, degree, col_to_expand):
-    """polynomial basis functions for input data x, for j=0 up to j=degree.
-        this function returns the matrix formed by applying the polynomial basis to the col_to_expand column of x
+    """
+    Polynomial basis functions for input data x, for j=0 up to j=degree.
+    This function returns the matrix formed by applying the polynomial basis to the col_to_expand column of x
 
-    Args:
-        x: numpy array of shape (N, D), N is the number of samples.
-        degree: integer.
-        col_to_expand: integer, the index of the column to which the polynomial basis fct will be applied
+    Arguments:
+        - x: numpy array of shape (N, D), N is the number of samples.
+        - degree: integer.
+        - col_to_expand: integer, the index of the column to which the polynomial basis function will be applied
 
     Returns:
-        data: numpy array of shape (N, D+degree)
+        - data: numpy array of shape (N, D+degree)
 
-    example: build_poly(np.array([[0, 0.5, 2], [1, 2, 3]]), 2, 1)
-    array([[0.   2.   1.   0.5  0.25]
-            [1.   3.   1.   2.   4.  ]])
     """
     poly = np.zeros((x.shape[0], degree))
     feature = x[:, col_to_expand]
@@ -239,15 +271,15 @@ def build_poly(x, degree, col_to_expand):
 
 # LOGISTIC
 
-
 def sigmoid(t):
-    """Apply the sigmoid function on t.
+    """
+    Apply the sigmoid function on t.
 
-    Args:
-        t: scalar or numpy array
+    Arguments:
+        - t: scalar or numpy array
 
     Returns:
-        scalar or numpy array
+        sigmoid_: scalar or numpy array to which the sigmoid function has been applied
     """
     sigmoid_ = 1.0 / (1 + np.exp(-t))
     return sigmoid_
@@ -255,14 +287,14 @@ def sigmoid(t):
 
 def compute_mse_logistic(y, tx, w):
     """
-    compute the mse for error vector e for logistic regression
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
+    Compute the mse for error vector e for logistic regression
+    Arguments:
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
 
     Returns:
-        scalar representing the MSE
+        - scalar representing the MSE
     """
     y = np.reshape(y, (-1, 1))
     e = y - tx.dot(w)
@@ -272,15 +304,15 @@ def compute_mse_logistic(y, tx, w):
 
 def compute_loss_logistic(y, tx, w):
     """
-    compute the loss with the negative log likelihood
+    Compute the loss with the negative log likelihood
 
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
+    Arguments:
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
 
     Returns:
-        a vector of shape (D, 1)
+        - the loss value, for the given parameters
     """
 
     y = np.reshape(y, (-1, 1))
@@ -290,22 +322,21 @@ def compute_loss_logistic(y, tx, w):
 
 
 def compute_gradient_logistic(y, tx, w):
-    """compute the gradient of loss.
+    """
+    Compute the gradient of the loss.
 
     Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
 
     Returns:
-        a vector of shape (D, 1)
+        - a vector of shape (D, 1)
     """
 
     y = np.reshape(y, (-1, 1))
-
     sig = sigmoid(tx.dot(w))
     gradient = np.dot(tx.T, (sig - y))
-    # np.dot(tx.T, sigmoid(np.dot(tx, w)) - y) / y.shape[0]
     return gradient / y.shape[0]
 
 
@@ -313,16 +344,17 @@ def learning_by_gradient_descent(y, tx, w, gamma):
     """
     Do one step of gradient descent using logistic regression. Returns the loss and the updated w.
 
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
-        gamma: float
+    Arguments:
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
+        - gamma: float, the step size
 
     Returns:
-        loss: scalar number
-        w: shape=(D, 1)
+        - loss: scalar number
+        - w: shape=(D, 1), the updated weights
     """
+
     gradient = compute_gradient_logistic(y, tx, w)
     loss = compute_loss_logistic(y, tx, w)
     w = w - gamma * gradient
@@ -331,21 +363,20 @@ def learning_by_gradient_descent(y, tx, w, gamma):
 
 
 def penalized_logistic_regression(y, tx, w, lambda_):
-    """Computes the penalized logistic regression's gradient and loss
+    """
+    Computes the penalized logistic regression's gradient and loss
 
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
-        lambda_: scalar
+    Arguments:
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
+        - lambda_: scalar: teh penalization term
 
     Returns:
-        loss: scalar number
-        gradient: shape=(D, 1)
+        - loss: scalar number
+        - gradient: shape=(D, 1)
     """
 
-    # penalty = lambda_ * w.T.dot(w)
-    # + np.squeeze(penalty)
     loss = compute_loss_logistic(y, tx, w)
     gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
 
@@ -355,18 +386,17 @@ def penalized_logistic_regression(y, tx, w, lambda_):
 def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     """
     Do one step of gradient descent, using the penalized logistic regression.
-    Return the loss and updated w.
 
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
-        gamma: scalar
-        lambda_: scalar
+    Arguments:
+        - y:  shape=(N, 1)
+        - tx: shape=(N, D)
+        - w:  shape=(D, 1)
+        - gamma: scalar, the step size
+        - lambda_: scalar, the penalization term
 
     Returns:
-        loss: scalar number
-        w: shape=(D, 1)
+        - loss: scalar number, the loss
+        - w: shape=(D, 1), the updates weights
     """
     loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
     w = w - gamma * gradient
@@ -375,13 +405,14 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
 
 
 def change_labels_to_zero(y):
-    """changing the labels from {-1;1} to {0;1}
+    """
+    Function to change the labels from {-1;1} to {0;1}
 
-    Args:
-        y:  shape=(N, 1), the labels to be changed
+    Arguments:
+        - y:  shape=(N, 1), numpy array of the labels to be changed
 
     Returns:
-        a vector of shape (N, 1)
+        - y_updated: a vector of shape (N, 1) with the updated labels
     """
     y_updated = np.ones(len(y))
 
@@ -394,26 +425,33 @@ def change_labels_to_zero(y):
 
 
 def change_labels_to_minusone(y):
-    # Change labels from {0,1} to{-1,1}
-    y_updated = np.ones(len(y))
+    """
+       Function to change the labels from {0;1} to {-1;1}
 
+       Arguments:
+           - y:  shape=(N, 1), numpy array of the labels to be changed
+
+       Returns:
+           - - y_updated: a vector of shape (N, 1) with the updated labels
+    """
+    y_updated = np.ones(len(y))
     for i in range(len(y)):
         if y[i] <= 0.5:
             y_updated[i] = -1
-    # y_updated[y == 0] = -1
 
     return y_updated
 
 
 def predict_labels_logistic(x, w):
-    """returns the predicted labels given data set x and weights w for logistic regression
+    """
+    Returns the predicted labels given data set x and weights w for logistic regression
 
-    Args:
-        x: shape=(N,D), data set from which we want to predict our labels
-        w: shape=(D,), weights used to make prediction
+    Arguments:
+        - x: shape=(N,D), data set from which we want to predict our labels
+        - w: shape=(D,), weights used to make prediction
 
     Returns:
-        the predicted labels of dataset x
+        - prediction: the predicted labels of dataset x
     """
     prediction = np.dot(x, w)
     # sets labels that are not equal to 1 or -1 to their closer number
