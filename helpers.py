@@ -62,6 +62,28 @@ def remove_outliers(data):
     return data
 
 
+def remove_outliers_to_std(data):
+    """Remove the outliers present in the data
+
+    Args:
+        data:
+
+    Returns:
+
+    """
+
+    means = np.mean(data, axis=0)
+    std_devs = np.std(data, axis=0)
+    bigger_than_matrix = data > (means + 3 * std_devs)
+    smaller_than_matrix = data < (means - 3 * std_devs)
+    data[bigger_than_matrix] = np.NaN
+    data = np.nan_to_num(data, nan=means + 3 * std_devs)
+    data[smaller_than_matrix] = np.NaN
+    data = np.nan_to_num(data, nan=means - 3 * std_devs)
+
+    return data
+
+
 def features_poly_extension(x, best_degrees):
     """Polynomial extension of the dataset where each feature is put to the degree giving the smallest error
     The first column is not extended since it's the offset (column of 1s)

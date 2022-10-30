@@ -16,6 +16,12 @@ def data_preprocessing(data, indices_zero_var=[]):
     # remove outliers
     data = remove_outliers(data)
 
+    # need to get the values of PRI_jet_num before standardization
+    jet_zero = (data[:, 22] == 0).astype(float)
+    jet_one = (data[:, 22] == 1).astype(float)
+    jet_two = (data[:, 22] == 2).astype(float)
+    jet_three = (data[:, 22] == 3).astype(float)
+
     # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
     # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
     # and PRI_jet_subleading_phi
@@ -27,12 +33,6 @@ def data_preprocessing(data, indices_zero_var=[]):
             data[j][i] = mp.sin(data[j][i])
         # hstack=concatenate with axis =1
         data = np.hstack((data, cosinus.reshape(-1, 1)))
-
-    # need to get the values of PRI_jet_num before standardization
-    jet_zero = (data[:, 22] == 0).astype(float)
-    jet_one = (data[:, 22] == 1).astype(float)
-    jet_two = (data[:, 22] == 2).astype(float)
-    jet_three = (data[:, 22] == 3).astype(float)
 
     # standardize the data
     data = standardize(data)
@@ -52,8 +52,64 @@ def data_preprocessing(data, indices_zero_var=[]):
     # remove the initial column
     data = np.delete(data, 22, axis=1)
 
+    # adds a row of 1 so that we can have an offset
+    data = np.c_[np.ones(len(data)), data]
+
+    return data
+
+def data_preprocessing_improved(data, indices_zero_var=[]):
+
+    # this function need to standardize the data, remove -999 data points (replaced by mean of column)
+    # remove features which have standard deviation of approx. 0
+
+    # find -999 values
+    boolean_matrix = data == -999
+    data[boolean_matrix] = np.NaN
+    data = np.nan_to_num(data, nan=np.nanmedian(data, axis=0))
+
+    # remove outliers
+    # data = remove_outliers(data)
+    data = remove_outliers_to_std(data)
+
+    # need to get the values of PRI_jet_num before standardization
+    jet_zero = (data[:, 22] == 0).astype(float)
+    jet_one = (data[:, 22] == 1).astype(float)
+    jet_two = (data[:, 22] == 2).astype(float)
+    jet_three = (data[:, 22] == 3).astype(float)
+
     # remove features where st deviation is close to 0
     data = np.delete(data, indices_zero_var, 1)
+
+    # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
+    # the features: DER_met_phi_centrality, PRI_tau_phi, PRI_lep_phi, PRI_met_phi, PRI_jet_leading_phi
+    # and PRI_jet_subleading_phi
+    # indices = [15, 18, 20, 25, 28]
+    indices = [22, 25]
+    for i in indices:
+        cosinus = np.zeros(data.shape[0])
+        for j in range(data.shape[0]):
+            cosinus[j] = mp.cos(data[j][i])
+            data[j][i] = mp.sin(data[j][i])
+        # hstack=concatenate with axis =1
+        data = np.hstack((data, cosinus.reshape(-1, 1)))
+
+    # standardize the data
+    data = standardize(data)
+
+    # change the categorical feature PRI_jet_num into dummy variables
+    data = np.concatenate(
+        (
+            data,
+            jet_zero.reshape(-1, 1),
+            jet_one.reshape(-1, 1),
+            jet_two.reshape(-1, 1),
+            jet_three.reshape(-1, 1),
+        ),
+        axis=1,
+    )
+
+    # remove the initial column
+    data = np.delete(data, 19, axis=1)
 
     # adds a row of 1 so that we can have an offset
     data = np.c_[np.ones(len(data)), data]

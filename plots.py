@@ -53,14 +53,15 @@ def features_degrees_visualization(
     """
     fig, axs = plt.subplots(6, 6, figsize=(35, 35))
     n = 0
-    for i in range(6):
-        for j in range(6):
-            axs[i, j].plot(degrees, mse[:, n], marker=".")
-            axs[i, j].set_xlabel("degrees")
-            axs[i, j].set_ylabel("mse")
-            axs[i, j].set_title("feature " + str(n + 1))
-            axs[i, j].grid(True)
-            n = n + 1
+    for ax in axs.flatten()[:-2]:
+        ax.plot(degrees, mse[:, n], marker=".")
+        ax.set_xlabel("degrees")
+        ax.set_ylabel("mse")
+        ax.set_title("feature " + str(n + 1))
+        ax.grid(True)
+        n = n + 1
+    axs.flatten()[-2].axis("off")
+    axs.flatten()[-1].axis("off")
     plt.show()
     if save_figure:
         plt.savefig(title + ".png")
