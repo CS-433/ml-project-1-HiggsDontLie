@@ -13,6 +13,32 @@ k_fold = 10
 y, data, labels = load_csv_data("train.csv")
 # we found no features with low variance, so indices_zero_var is an empty array
 x = data_preprocessing(data)
+'''
+# CV RIDGE POLY LOGISTIC 
+# set seed to be able to reproduce our results
+seed = 1
+# 10-fold cross-validation (cv)
+k_fold = 10
+y, data, labels = load_csv_data("train.csv")
+# we found no features with low variance, so indices_zero_var is an empty array
+x = data_preprocessing(data)
+initial_w = np.zeros(x.shape[1])
+max_iters = 200
+gamma = 0.0001
+gammas = np.logspace(-5, -1, 15)
+lambda_ = 0.05
+lambdas = np.logspace(-5, 0, 15)
+degrees = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+
+best_mse, best_degrees, best_lambdas = cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed)
+print ("Best MSE:", best_mse)
+Best MSE: 0.38246238225599327
+print ("Best Degrees:", best_degrees)
+Best Degrees: 2
+print ("Best Lambdas:", best_lambdas)
+Best Lambdas: 0.19306977288832497
+'''
 
 # compute mse on train and test sets for logistic regression after cross validation:
 
