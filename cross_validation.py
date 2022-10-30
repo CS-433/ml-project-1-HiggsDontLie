@@ -351,6 +351,7 @@ def find_best_degree(y, x):
     Returns:
         - numpy array containing the best degree for each feature excluding the dummy variables (degree 0 is the best
           degree of extension for feature 1, etc...)
+        - mse_te: numpy array containing all test errors
     """
     degrees = 10
     nb_col = x.shape[1]
@@ -368,7 +369,7 @@ def find_best_degree(y, x):
             mse_tr[d - 1, c - 1] = mse_tr_i
             mse_te[d - 1, c - 1] = mse_te_i
     # returns an array of the best degree for each feature (= row index of each column + 1 since we start with degree=1)
-    return np.argmin(mse_te, axis=0) + 1
+    return np.argmin(mse_te, axis=0) + 1,  mse_te
 
 
 def cv_best_degrees_ridge(y, x, best_degrees, lambdas, k_fold, seed=1):

@@ -15,15 +15,24 @@ Directory layout
     ├── cross_validation.py
     ├── helpers.py
     ├── implementations.py
-    ├── model_selection.py
+    ├── plots
     ├── plots.py
+    ├── project_1.ipynb
     ├── README.md
     ├── train.csv
     └── run.py
 
 
-Description of files
+
+Description of contents
 ==============
+
+Directories:
+---------
+Directory name                  | description
+--------------------------------|------------------------------------------
+plots           			  |Contains all the plots of the preliminary data visualization and of the tuning of hyper-parameters
+
 
 Non Python files:
 -----------
@@ -31,19 +40,19 @@ Non Python files:
 filename                        | description
 --------------------------------|------------------------------------------
 README.md                       | Text file (markdown format) describing all the files of the project
-train.csv                        | CSV file, training data for the prediction models (found on AICrowd)
+train.csv                       | CSV file, training data for the prediction models (found on AICrowd)
 
 Python files:
 ---------
 
 filename                        | description
 --------------------------------|------------------------------------------
-cross_validation.py                   |Set of functions that perform the k_fold-cross validation of the different prediction models from implementations.py
-helpers.py                   |Set of useful functions used throughout the project
-implementations.py                  | Data preprocessing function as well as our model rediction functions. These include Least Squares, Ridge Regression, Gradient Descend, Stochastic Gradient Descend and Polynomial Regression
-model_selection.py                   |File where we compared the different errors of our cross-validation models to pick the one with the smallest error, i.e. the best prediction model
-plots.py                   |Function used to plot the resulting mses and visualize the shape of the mses according to a particular parameter e.g., the stepsize gamma 
-run.py                   |File that runs a selected model and creates the submission file for AICrowd
+cross_validation.py             |Set of functions that perform the k_fold-cross validation of the different prediction models from implementations.py
+helpers.py                   	  |Set of useful functions used throughout the project
+implementations.py              |Data preprocessing function as well as our model prediction functions. These include Least Squares, Ridge Regression, Gradient Descend, Stochastic Gradient Descend, Polynomial Regression, Logistic Regression and Regularized Logistic Regression
+plots.py                        |Functions used to plot some of our results
+run.py                          |File that runs a our best model and creates the submission file for AICrowd
+project_1.ipynb	              |Initial data visualisation, tuning of hyper-parameters and model comparison to find the best prediction model
 
 Authors
 =======
