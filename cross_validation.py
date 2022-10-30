@@ -307,7 +307,6 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed):
     return mse_train, mse_test
 
 
-
 def cv_ridge_reg(y, x, lambda_, k_fold, seed):
     """performs "k_fold"-cross validation of the ridge regression method
 
@@ -423,6 +422,7 @@ def cv_poly_ridge(y, x, degrees, k_fold, lambdas, seed=1):
 
     return np.min(best_mses), degrees[ind_best_degree], best_lambdas[ind_best_degree]
 
+
 def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
     """performs "k_fold"-cross validation of the ridge regression on logistic regression method on different polynomial expansions of data x
 
@@ -444,7 +444,9 @@ def cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed=1):
         x_poly = x
         for n in range(x.shape[1] - 4):
             x_poly = build_poly(x_poly, d, col_to_expand=1)
-        mse_tr_i, mse_te_i = cv_reg_logistic_regression(y, x_poly, lambdas, k_fold, seed)
+        mse_tr_i, mse_te_i = cv_reg_logistic_regression(
+            y, x_poly, lambdas, k_fold, seed
+        )
         best_index = np.argmin(mse_te_i)
         best_lambdas.append(lambdas[best_index])
         best_mses.append(mse_te_i[best_index])

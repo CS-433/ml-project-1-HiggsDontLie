@@ -47,7 +47,6 @@ x = data_preprocessing(data)
 # Min error test: 0.39531978100633747
 
 
-
 # compute mse on train and test sets for least squares after cv
 # mse_tr, mse_te = cv_least_squares(y, x, 7, seed)
 
