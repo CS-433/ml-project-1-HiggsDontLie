@@ -63,7 +63,7 @@ def data_preprocessing(data):
     return data
 
 
-def data_preprocessing_improved(data, col_to_remove=[]):
+def data_preprocessing_improved(data, col_to_remove):
     """
        Improved function to pre-process the data. Several things are done in this function, namely:
            - It removes the -999 data points and replaces them with the median
