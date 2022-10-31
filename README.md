@@ -41,6 +41,7 @@ Non Python files:
 filename                        | description
 --------------------------------|------------------------------------------
 README.md                       | Text file (markdown format) describing all the files of the project
+Project1_Higgs_boson.pdf        | Project report containing our results and analyse on the challenge
 
 
 Python files:
