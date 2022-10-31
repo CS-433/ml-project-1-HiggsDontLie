@@ -100,7 +100,7 @@ def data_preprocessing_improved(data, col_to_remove):
     # remove col_to_remove
     data = np.delete(data, col_to_remove, 1)
 
-    # change angle with their sinus and cosinus to keep the neighbourhood relationships, it concerns
+    # change angles with their sine and cosine to keep the neighbourhood relationships, it concerns
     # the features: PRI_jet_leading_phi and PRI_jet_subleading_phi
     indices = [22, 25]
     data = change_angle(data, indices)

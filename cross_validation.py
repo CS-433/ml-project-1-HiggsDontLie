@@ -296,7 +296,7 @@ def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed,  gamma=0.00719686):
         for k in range(k_fold):
             x_train, y_train, x_test, y_test = build_sets_cv(y, x, k_indices, k)
             weights, loss_i = reg_logistic_regression_break(
-                y_train, x_train, lambda_, initial_w, max_iters, gamma
+                y_train, x_train, initial_w, lambda_, gamma=gamma
             )
 
             mse_train_i = compute_mse_logistic(y_train, x_train, weights)
