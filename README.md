@@ -13,7 +13,6 @@ Directory layout
 
     Directory                           # Main directory
     ├── cross_validation.py
-    ├── train.csv
     ├── helpers.py
     ├── implementations.py
     ├── model_selection.py
@@ -22,7 +21,7 @@ Directory layout
     ├── project_1.ipynb
     ├── README.md
     ├── run.py
-    └── Project1_Higgs_boson.pdf
+    └── Report_Project1_HiggsBoson.pdf
 
 To properly run our project, we expect the train.csv to be placed at this level, i.e., at the same level as e.g., 
 helpers.py or run.py, in the main directory
