@@ -20,7 +20,8 @@ Directory layout
     ├── project_1.ipynb
     ├── README.md
     ├── train.csv
-    └── run.py
+    ├── run.py
+    └── Higgs boson?.pdf
 
 
 
