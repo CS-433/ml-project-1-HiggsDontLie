@@ -30,7 +30,7 @@ Description of contents
 ==============
 
 Directories:
----------
+
 Directory name                  | description
 --------------------------------|------------------------------------------
 plots           			    |Contains all the plots of the preliminary data visualization and of the tuning of hyper-parameters. Every plot that is run in our scripts will be saved in this directory 
@@ -38,17 +38,14 @@ plots           			    |Contains all the plots of the preliminary data visualiza
 
 Non Python files:
 -----------
-
 filename                        | description
 --------------------------------|------------------------------------------
 README.md                       | Text file (markdown format) describing all the files of the project
-Project1_Higgs_boson.pdf        | Project report containing our results and analyse on the challenge
-train.csv                       | Data used to train our models
+Report_Project1_HiggsBoson.pdf        | Project report containing our results and analysis of the different issues tackled troughout the project
 
 
 Python files:
 ---------
-
 filename                        | description
 --------------------------------|------------------------------------------
 cross_validation.py             |Set of functions that perform the k_fold-cross validation of the different prediction models from implementations.py
