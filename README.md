@@ -15,6 +15,7 @@ Directory layout
     ├── cross_validation.py
     ├── helpers.py
     ├── implementations.py
+    ├── model_selection.py
     ├── plots
     ├── plots.py
     ├── project_1.ipynb
@@ -50,6 +51,7 @@ filename                        | description
 cross_validation.py             |Set of functions that perform the k_fold-cross validation of the different prediction models from implementations.py
 helpers.py                      |Set of useful functions used throughout the project
 implementations.py              |Data preprocessing function as well as our model prediction functions. These include Least Squares, Ridge Regression, Gradient                                      Descend, Stochastic Gradient Descend, Polynomial Regression, Logistic Regression and Regularized Logistic Regression
+model_selection.py              |File containing the resulting MSE computed by different hyperparameters.
 plots.py                        |Functions used to plot some of our results
 run.py                          |File that runs a our best model and creates the submission file for AICrowd
 project_1.ipynb	                |Initial data visualisation, tuning of hyper-parameters and model comparison to find the best prediction model
