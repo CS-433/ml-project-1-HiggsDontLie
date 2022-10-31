@@ -34,7 +34,7 @@ Directories:
 ---------
 Directory name                  | description
 --------------------------------|------------------------------------------
-plots           			    |Contains all the plots of the preliminary data visualization and of the tuning of hyper-parameters
+plots           			    |Contains all the plots of the preliminary data visualization and of the tuning of hyper-parameters. Every plot that is run in our scripts will be saved in this directory 
 
 
 Non Python files:
@@ -54,7 +54,7 @@ filename                        | description
 --------------------------------|------------------------------------------
 cross_validation.py             |Set of functions that perform the k_fold-cross validation of the different prediction models from implementations.py
 helpers.py                      |Set of useful functions used throughout the project
-implementations.py              |Data preprocessing function as well as our model prediction functions. These include Least Squares, Ridge Regression, Gradient                                      Descend, Stochastic Gradient Descend, Polynomial Regression, Logistic Regression and Regularized Logistic Regression
+implementations.py              |Two data preprocessing function as well as our model prediction functions. These include Least Squares, Ridge Regression, Gradient Descend, Stochastic Gradient Descend, Polynomial Regression, Logistic Regression, Break Logistic Regression, Regularized Logistic Regressio and Break Regularized Logistic Regresssion
 model_selection.py              |File containing the resulting MSE computed by different hyperparameters.
 plots.py                        |Functions used to plot some of our results
 run.py                          |File that runs a our best model and creates the submission file for AICrowd
