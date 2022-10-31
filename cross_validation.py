@@ -263,7 +263,7 @@ def cv_logistic_regression(y, x, gammas, k_fold, seed):
     return mse_train, mse_test
 
 
-def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed,  gamma=0.00719686):
+def cv_reg_logistic_regression(y, x, lambdas, k_fold, seed, gamma=0.00719686):
     """
     Performs the "k_fold"-cross validation of the regulated logistic regression method
 

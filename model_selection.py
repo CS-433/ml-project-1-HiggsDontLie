@@ -5,7 +5,8 @@ from plots import *
 from helpers import *
 import black
 
-
+"""
+# CV RIDGE POLY LOGISTIC # 2 --> UPDATED VERSION
 # set seed to be able to reproduce our results
 seed = 1
 # 10-fold cross-validation (cv)
@@ -13,6 +14,19 @@ k_fold = 10
 y, data, labels = load_csv_data("train.csv")
 # we found no features with low variance, so indices_zero_var is an empty array
 x = data_preprocessing(data)
+lambdas = np.logspace(-5, 0, 15)
+degrees = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+
+best_mse, best_degree, best_lambda = cv_poly_ridge_logistic(y, x, degrees, k_fold, lambdas, seed)
+print("Best MSE:", best_mse)
+Best MSE: 0.36680968552990506
+print("Best Degree:", best_degree)
+Best Degree: 2
+print("Best Lambda:", best_lambda)
+Best Lambda: 1.0
+
+"""
 """
 # CV RIDGE POLY LOGISTIC 
 # set seed to be able to reproduce our results
@@ -184,7 +198,7 @@ print(min_mse_tr)
 print(min_mse_te)
 mses_visualization(mse_tr, mse_te, lambdas, "lambdas", title="cv ridge regression best degrees", x_log_scale=True)
 """
-
+"""
 # cross validation of lambda and degree at the same time to find optimal degree and lambda
 x = data_preprocessing(data)
 degrees = range(1, 10)
@@ -200,3 +214,4 @@ print(best_degree)
 # 0.0001 -> with mean
 # 1e-07 -> median for -999 and outlier
 print(best_lambda)
+"""
