@@ -13,6 +13,7 @@ Directory layout
 
     Directory                           # Main directory
     ├── cross_validation.py
+    ├── train.csv
     ├── helpers.py
     ├── implementations.py
     ├── model_selection.py
@@ -42,6 +43,7 @@ filename                        | description
 --------------------------------|------------------------------------------
 README.md                       | Text file (markdown format) describing all the files of the project
 Project1_Higgs_boson.pdf        | Project report containing our results and analyse on the challenge
+train.csv                       | Data used to train our models
 
 
 Python files:
