@@ -21,7 +21,7 @@ Directory layout
     ├── project_1.ipynb
     ├── README.md
     ├── run.py
-    └── Higgs boson?.pdf
+    └── Project1_Higgs_boson.pdf
 
 
 
