@@ -24,7 +24,8 @@ Directory layout
     ├── run.py
     └── Project1_Higgs_boson.pdf
 
-
+To properly run our project, we expect the train.csv to be placed at this level, i.e., at the same level as e.g., 
+helpers.py or run.py, in the main directory
 
 Description of contents
 ==============
